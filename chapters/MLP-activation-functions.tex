@@ -33,7 +33,7 @@ node[above,pos=1] {$\phi(x)$};
 \caption{Step Function}
 \end{figure}
 
-\subsection{Sigmoid}
+\subsection{Sigmoid}\label{sec:sigmoid}
 Most common activation function, can saturate and is easy to dervice.
 \begin{equation}\label{ed:sigmoid}
 \sigma(x) = \frac{1}{1 + e^{-\beta x}}
@@ -59,29 +59,41 @@ And it's derivative:
 	ylabel = $y$,
 	ymin = -0.5,
 	ymax = 1.5,
-	xmin = -8,
-	xmax = 8,
+	xmin = -5,
+	xmax = 5,
 	clip = false,
 ]
 \addplot[
-	domain = -8:8, 
 	samples = 100, 
-	color = blue,
+	color = red,
 	thick, smooth,
 	]
 {1/(1+e^(-x))}
 node[right,pos=1] {$\sigma(x)$};
 \addplot[
-	domain = -8:8, 
 	samples = 100, 
-	color = red,
+	color = blue,
 	thick, smooth,
 	]
 {(1/(1+e^(-x)))*(1-(1/(1+e^(-x))))}
 node[right,pos=1] {$\sigma(x)(1-\sigma(x))$};
+\addplot[
+	samples = 100, 
+	color = orange,
+	thick, smooth,
+	]
+{1/(1+e^(-3*x))}
+node[above,pos=0.8] {$\sigma(x)$ with $\beta=3$};
+\addplot[
+	samples = 100, 
+	color = yellow,
+	thick, smooth,
+	]
+{1/(1+e^(-0.5*x))}
+node[below right,pos=0.9] {$\sigma(x)$ with $\beta=0.5$};
 \end{axis}
 \end{tikzpicture}
-\caption{Sigmoid Function (blue) and its derivative (red).}
+\caption{Sigmoid Function (red) and its derivative (blue).}
 \end{figure}
 
 \subsection{Softmax Function}
@@ -120,29 +132,27 @@ And it's derivative:
 	ylabel = $y$,
 	ymin = -1.5,
 	ymax = 2.5,
-	xmin = -8,
-	xmax = 8,
+	xmin = -5,
+	xmax = 5,
 	clip = false,
 ]
 \addplot[
-	domain = -8:8, 
 	samples = 100, 
-	color = blue,
+	color = red,
 	thick, smooth,
 	]
 {tanh(x)}
 node[right,pos=1] {$\tanh(x)$};
 \addplot[
-	domain = -8:8, 
 	samples = 100, 
-	color = red,
+	color = blue,
 	thick, smooth,
 	]
 {1-tanh(x)}
 node[right,pos=1] {$1 - \tanh(x)$};
 \end{axis}
 \end{tikzpicture}
-\caption{Hyperbolic Tangent Function (blue) and its derivative (red).}
+\caption{Hyperbolic Tangent Function (red) and its derivative (blue).}
 \end{figure}
 
 \subsection{Linear Function}
