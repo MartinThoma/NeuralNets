@@ -1,0 +1,17 @@
+\subsection{k-Means}
+% Finding $C^*(i)$ by enumeration is too time-consuming.
+% ! Finding C*(i) by enumeration is too time-consuming
+% ￼tance can be used by􏰀redefining the x values (Exercise 14.1). 2 ij2
+% d(x,x′)= (x −x′ ) =||x −x′|| ! Instead use itei raitive greeidj y diejscent i i
+% p
+% ￼The K-means algorithm is one of the most popular iterative des The within-point scatter (14.28) can be written as
+% j=1 ! Convergenctertiongamloceathlodptsi.mIatisintendedforsituationsinwhichallvariab
+% ￼! Dissimilarity measure
+Minimize $$W(C) = \frac{1}{2} \sum\limits_{k=1}^K \sum\limits_{C(i)=k} \sum\limits_{C(j)=k} ||x_i - x_j||^2 = \sum\limits_{k=1}^K N_k \sum\limits_{C(i)=k} ||x_i - \mu_k||^2$$
+
+\subsection{Lloyd's Algorithm}
+\begin{enumerate}
+\item \textbf{Classify}: Assign each observation $i$ to the nearest centroid: $$C(i) = \argmin\limits_{1\leq k \leq K} ||x_i - \mu_k||^2$$
+\item \textbf{Recenter}: For each class $k$, compute a new centroid as the mean of the updated class assignments: $$\mu_k = \frac{\sum\limits_{C(i)=k} x_i}{N_k}$$
+\item \textbf{Repeat until stopping criteria fulfilled}
+\end{enumerate}

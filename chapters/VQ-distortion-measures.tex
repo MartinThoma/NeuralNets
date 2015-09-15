@@ -1,0 +1,28 @@
+\subsection{Distortion Measures}\label{sec:lvq-distortion-measures}
+TODO
+% Distortion is an nonnegative measure for an input vector $x$ and a reproduction measure $\hat{x}$. Distortion measures may not be true metrics, \eg be unsymmetric[3] or not fulfill the triangle inequality.
+
+Most common is the squared-error distortion:
+\begin{equation}
+d(x, \hat{x}) = \sum_{i=1}^N |x_i - \hat{x}_i|^2
+\end{equation}
+
+Other common distortion measures are the $l_\nu$, or Holder norm,
+\begin{equation}\label{eq:holder-norm}
+d(x, \hat{x}) = \left( \sum_{i=1}^N |x_i - \hat{x}_i|^\nu \right) ^{\frac{1}{\nu}} = || x - \hat{x} ||_\nu
+\end{equation}
+
+and its $\nu^{th}$ power, the $\nu^{th}$-law distortion:
+\begin{equation}
+d(x, \hat{x}) = \sum_{i=1}^N |x_i - \hat{x}_i|^\nu
+\end{equation}
+
+The holder Norm (\ref{eq:holder-norm}) is a distance and fulfills the triangle inequality\footnote{triangle inequality: $d(x, \hat{x}) \leq d(x, y) + d(y, \hat{x})$, for all $y$}, the $\nu^{th}$-law distortion not.
+
+All three and many others, as the weighted-squares distortion and the quadratic distortion, depend on the difference $x - \hat{x}$. We call them can be described as $d(x, \hat{x}) = L(x - \hat{x})$. A distortion not having this form is the one by Itakura, Saito and Chaffee,
+
+\begin{equation}
+d(x, \hat{x}) = (x - \hat{x})\, R(x)\, (x - \hat{x})^T
+\end{equation}
+
+, where $R(x)$ is the autocorrelation matrix, see \cite{Linde1980} for details.

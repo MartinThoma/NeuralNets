@@ -1,0 +1,38 @@
+\section{Error Functions}
+Sometimes also called objective functions or loss-functions.
+
+\subsection{Mean-Squared Error}
+As the name suggests the \gls{MSE} is defined as the mean (over all training examples) of squared difference between the correct value $t_i$ und the correct value $o_i$. This big errors are punished harder than small differences.
+\begin{equation}\label{eq:mse}
+E_{\text{MSE}} = \frac{1}{n} \sum_{i=1}^n (t_i - o_i)^2
+\end{equation}
+This would derive to
+\begin{align}
+\begin{split}
+\frac{\partial E_{\text{MSE}}}{\partial o_j}
+&= \frac{1}{n} \sum_{i=1}^n \frac{\partial (t_i - o_i)^2}{\partial o_j}\\
+&= \frac{1}{n} \frac{\partial (t_i - o_j)^2}{\partial o_j}\\
+&= \frac{1}{n} 2 (t_i - o_j) (-1)\\
+&= - \frac{2}{n} (t_i - o_j)
+\end{split}
+\end{align}
+which is technically fine, but as the fraction is only a constant factor, we will often use a a slightly different definition:
+\begin{align}\label{ed:mse2}
+E_{\text{MSE}} &= \half \sum_{i=1}^k (t_i - o_i)^2\\
+\frac{\partial E_{\text{MSE}}}{\partial o_j}
+&= - (t_i - o_j)
+\end{align}
+
+\subsection{Cross Entropy Error}
+\Gls{CE} works great well on classifications tasks ($t_i$ is either $0$ or $1$ and $o_i$ is the class probability computed by the network).
+\begin{equation}\label{eq:ce}
+E_{\text{CE}} = - \sum_{i=1}^k \left( t_i \log(o_i) + (1 - t_i) \log(1 - o_i) \right)
+\end{equation}
+This will derive to:
+\begin{align}
+\begin{split}
+\frac{\partial E_{\text{CE}}}{\partial o_j} &= - \frac{\partial}{\partial o_j} \sum_{i=1}^k \left( t_i \log(o_i) + (1 - t_i) \log(1 - o_i) \right)\\
+&= - \frac{\partial}{\partial o_j} t_j \log(o_j) - \frac{\partial}{\partial o_j} (1 - t_j) \log(1 - o_j)\\
+&= - \frac{t_j}{o_j} + \frac{1 - t_j}{1 - o_j}
+\end{split}
+\end{align}

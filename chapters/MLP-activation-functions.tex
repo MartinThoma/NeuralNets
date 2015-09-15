@@ -1,0 +1,224 @@
+\section{Activation Functions}
+
+\subsection{Step Function}
+\begin{equation}\label{eq:step_function}
+\phi(x) = 
+	\begin{cases}
+		1 & \text{if}\, x > 0\\
+		0 & \text{if}\, x \leq 0
+	\end{cases}
+\end{equation}
+The derivative is always 0.
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	axis lines = middle,
+	xlabel = $x$,
+	ylabel = $y$,
+	ymin = -0.5,
+	ymax = 1.5,
+	xmin = -1,
+	xmax = 1,
+	clip = false,
+]
+\addplot[
+	mark = none,
+	color = blue,
+	thick,
+] coordinates {(-1,0)(0,0)(0,1)(1,1)}
+node[above,pos=1] {$\phi(x)$};
+\end{axis}
+\end{tikzpicture}
+\caption{Step Function}
+\end{figure}
+
+\subsection{Sigmoid}
+Most common activation function, can saturate and is easy to dervice.
+\begin{equation}\label{ed:sigmoid}
+\sigma(x) = \frac{1}{1 + e^{-\beta x}}
+\end{equation}
+And it's derivative:
+\begin{align}\label{ed:sigmoid_derivative}
+\begin{split}
+\frac{d\sigma(x)}{dx} &= \frac{d}{dx} (1 + e^{-\beta x})^{-1}\\
+&= (-1) (1 + e^{-\beta x})^{-2} (-\beta e^{-\beta x})\\
+&= \beta (1 + e^{-\beta x})^{-2} e^{-\beta x}\\
+&= \beta \frac{1}{1 + e^{-\beta x}} \frac{e^{-\beta x}}{1 + e^{-\beta x}}\\
+&= \beta \sigma(x) \frac{e^{-\beta x} + 1 - 1}{1 + e^{-\beta x}}\\
+&= \beta \sigma(x) (1 - \frac{1}{1 + e^{-\beta x}})\\
+&= \beta \sigma(x) (1 - \sigma(x))
+\end{split}
+\end{align}
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	axis lines = middle,
+	xlabel = $x$,
+	ylabel = $y$,
+	ymin = -0.5,
+	ymax = 1.5,
+	xmin = -8,
+	xmax = 8,
+	clip = false,
+]
+\addplot[
+	domain = -8:8, 
+	samples = 100, 
+	color = blue,
+	thick, smooth,
+	]
+{1/(1+e^(-x))}
+node[right,pos=1] {$\sigma(x)$};
+\addplot[
+	domain = -8:8, 
+	samples = 100, 
+	color = red,
+	thick, smooth,
+	]
+{(1/(1+e^(-x)))*(1-(1/(1+e^(-x))))}
+node[right,pos=1] {$\sigma(x)(1-\sigma(x))$};
+\end{axis}
+\end{tikzpicture}
+\caption{Sigmoid Function (blue) and its derivative (red).}
+\end{figure}
+
+\subsection{Softmax Function}
+In a classification problem we would like $a_j$ to be a probability ($\Rightarrow \sum_i a_i = 1$). % TODO outputs posteriori probability, biggest value is very likely to get close to 1
+\begin{equation}\label{ed:softmax}
+a_i = \phi(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}
+\end{equation}
+And it's derivative:
+\begin{align}
+\begin{split}\label{ed:softmax_derivative}
+\frac{\partial \phi(z_i)}{\partial z_i}
+&= \frac{\left(\frac{\partial}{\partial z_i} e^{z_i}\right)(\sum_j e^{z_j}) - e^{z_i} \left(\frac{\partial}{\partial z_i}(\sum_j e^{z_j})\right)}{(\sum_j e^{y_j})^2}\\
+&= \frac{e^{y_i} \sum_j e^{y_j} - e^{y_i} e^{y_i}}{(\sum_j e^{y_j})^2}\\
+&= \frac{e^{y_i} \sum_j e^{y_j}}{(\sum_j e^{y_j})^2} - \frac{e^{y_i} e^{y_i}}{(\sum_j e^{y_j})^2}\\
+&= \frac{e^{y_i}}{\sum_j e^{y_j}} - \left(\frac{e^{y_i}}{\sum_j e^{y_j}}\right)^2\\
+&= \phi(y_i) - \phi(y_i)^2\\
+&= \phi(y_i) (1 - \phi(y_i))
+\end{split}
+\end{align}
+
+\subsection{Hyperbolic Tangent Function}
+Similar to Sigmoid function, but if the input has a mean of $0$ then so will the output. % TODO Costly computation?
+\begin{equation}
+\phi(x) = \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
+\end{equation}
+And it's derivative:
+\begin{equation}
+\frac{d\phi(x)}{dx} = 1 - \tanh(x) = \frac{(e^x - e^{-x})^2}{(e^x + e^{-x})^2}
+\end{equation}
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	axis lines = middle,
+	xlabel = $x$,
+	ylabel = $y$,
+	ymin = -1.5,
+	ymax = 2.5,
+	xmin = -8,
+	xmax = 8,
+	clip = false,
+]
+\addplot[
+	domain = -8:8, 
+	samples = 100, 
+	color = blue,
+	thick, smooth,
+	]
+{tanh(x)}
+node[right,pos=1] {$\tanh(x)$};
+\addplot[
+	domain = -8:8, 
+	samples = 100, 
+	color = red,
+	thick, smooth,
+	]
+{1-tanh(x)}
+node[right,pos=1] {$1 - \tanh(x)$};
+\end{axis}
+\end{tikzpicture}
+\caption{Hyperbolic Tangent Function (blue) and its derivative (red).}
+\end{figure}
+
+\subsection{Linear Function}
+\begin{equation}
+\phi(x) = x
+\end{equation}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	axis lines = middle,
+	xlabel = $x$,
+	ylabel = $y$,
+	ymin = -5,
+	ymax = 5,
+	xmin = -5,
+	xmax = 5,
+	clip = false,
+]
+\addplot[
+	domain = -5:5, 
+	samples = 100, 
+	color = blue,
+	thick, smooth,
+	]
+{x}
+node[left,pos=0] {$x$};
+\addplot[
+	domain = -5:5, 
+	samples = 100, 
+	color = red,
+	thick, smooth,
+	]
+{max(0,x)}
+node[left,pos=0] {$\max(0,x)$};
+\addplot[
+	domain = -5:5, 
+	samples = 100, 
+	color = orange,
+	thick, smooth,
+	]
+{ln(1+e^x)}
+node[right,pos=1] {$\ln(1+e^x)$};	
+\end{axis}
+\end{tikzpicture}
+\caption{Linear Function (blue), Rectified Linear Unit (red), Softplus (orange)}
+\end{figure}
+
+\subsection{Rectified Linear Unit}
+The Rectified Linear Unit (ReLU) is more biologically plausible.
+\begin{equation}
+\phi(x) = \max(0, x)
+\end{equation}
+And it's derivative:
+\begin{align*}
+\frac{d\phi(x)}{dx} = 
+	\begin{cases}
+		1 & \text{if}\, x > 0\\
+		0 & \text{if}\, x \leq 0\\
+	\end{cases}
+\end{align*}
+
+\subsection{Softplus}
+Smoothed version of ReLU.
+\begin{equation}\label{eq:softplus}
+\phi(x) = \ln(1 + e^x)
+\end{equation}
+And it's derivative:
+\begin{align*}
+\frac{d\phi(x)}{dx} = \frac{e^x}{1 + e^x} = \frac{1}{e^{-x} + 1}
+\end{align*}
+
+\subsection{Maxout}
+Outputs the maximum of its inputs
+\begin{align}
+a_j^{(l)} = \max_i z_i^{(l)}, \quad (j-1)g +1 \leq i \leq j g \\
+z_i^{(l)} = \sum_k x_k^{(l-1)} w_{ki}^{(l)} + b^{(l)}
+\end{align}

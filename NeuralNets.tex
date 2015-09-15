@@ -1,0 +1,75 @@
+\documentclass[a4paper]{book}
+
+% \usepackage[english]{babel}
+\usepackage[british]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{nameref}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.12}
+
+% cache figures outside of the latex document for faster compiles
+\usetikzlibrary{external}
+\tikzsetexternalprefix{figures/}
+\tikzexternalize[shell escape=-enable-write18]
+
+\usepackage[nomain,toc,acronym]{glossaries}
+\makeglossaries
+\loadglsentries{Acronyms.tex}
+
+% only files listed here will be included
+% \includeonly{
+% 	chapters/LVQ,
+% 	chapters/MLP,
+% 	chapters/Preprocessing,
+% }
+
+% Additional math operators
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% Shortcuts
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\ie}{i.\,e. }
+\newcommand{\eg}{e.\,g. }
+\newcommand{\wrt}{w.\,r.\,t. }
+
+\title{Neuronal Networks \\ \large Formulae Collection}
+\author{Marvin Ritter\\
+	\href{mailtto:marvin.ritter@gmail.com}{marvin.ritter@gmail.com}
+}
+
+% include hyperref packeg
+\usepackage[pdftex,
+            pdfauthor={Marvin Ritter},
+            pdftitle={Neuronal Networks - Formulae Collection},
+            pdfsubject={This is my personal collection of formulas in the field of neural networks.},
+            pdfkeywords={Artificial Neuronal Networks Machine Learning},
+            pdfproducer={LaTeX with hyperref},
+            pdfcreator={pdflatex}]{hyperref}
+
+\begin{document}
+
+\maketitle
+
+\chapter*{Introduction}
+This is my personal collection of formulae in the field of neural networks. I started it in preparation to my exam on the neural nets at \gls{KIT}. Even so the content will be similar to the course it is neither limited to it nor linked with the course in any means. \emph{This is not official script and may contain errors and lag completeness.}
+
+Corrections, supplements (or wishes) and links to good sources/ papers are very welcome. Just mail me to \href{mailtto:marvin.ritter@gmail.com}{marvin.ritter@gmail.com}.
+
+\tableofcontents 
+
+\include{chapters/VQ}
+\include{chapters/MLP}
+\include{chapters/Preprocessing}
+
+\bibliographystyle{apalike}
+\bibliography{Remote}
+
+\printglossary[type=\acronymtype]
+
+\end{document}

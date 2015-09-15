@@ -1,0 +1,29 @@
+\chapter{Vector Quantization}\label{chapter:vq}
+TODO
+
+\begin{itemize}
+\item $N$ observations/training examples, $x_1, ..., x_N$
+\item fixed number of clusters/classes $K$
+\item $C(i) = K$ assigns observation $x_i$ to a cluster $k$ (typical each observation is only in one cluster)
+\item $\mu_k$: centroid of cluster $k$
+\item $N_k$: number of observations that belong to cluster k ($N_k = \sum\limits_{C(i)=k} 1$)
+\end{itemize}
+
+\section{Unsupervised Vector Quantization}
+Also called clustering.
+
+\subsection{Loss Functions}
+\begin{itemize}
+\item Intra-class scatter: $W(C) = \frac{1}{2} \sum\limits_{k=1}^K \sum\limits_{C(i)=k} \sum\limits_{C(j)=k} d(x_i, x_j)$
+\item Inter-class scatter: $B(C) = \frac{1}{2} \sum\limits_{k=1}^K \sum\limits_{C(i)=k} \sum\limits_{C(j)\neq k} d(x_i, x_j)$
+\item Total scatter: $T(C) = W(C) + B(C) = \frac{1}{2} \sum\limits_{i=1}^N \sum_{j=1}^N d(x_i, x_j)$
+\item Minimizing $W(C)$ is equivalent to maximizing $B(C)$
+\end{itemize}
+
+\input{chapters/VQ-kmeans}
+
+\section{Supervised Vector Quantization}
+
+\input{chapters/VQ-distortion-measures}
+
+\input{chapters/VQ-lvq1-3}

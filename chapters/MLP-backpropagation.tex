@@ -1,0 +1,55 @@
+\section{Backpropagation}\label{sec:backpropagation}
+\begin{itemize}
+\item $m$ inputs/features, $x \in \mathbb{R}^m$
+\item $k$ target outputs, $t \in \mathbb{R}^k$
+\item $n$ training examples of form $(x, t) \in \mathbb{R}^m \times \mathbb{R}^k$
+\item $L$ layers ($1,\dots,L$)
+\item $E$: error function (\eg $E_\text{MSE} = \half \sum\limits_{i=1}^k (t_i - o_i^{(L)})^2$)
+\item $\phi(y)$: activation function (\eg $\phi(y) = \sigma(y) = \frac{1}{1 + e^{-y}}$)
+\item $x_{ij}^{(l)}$: input $i$ of neuron $j$ in layer $l$
+\item $w_{ij}^{(l)}$: weight of connection from neuron~$i$ in layer~$l-1$ to neuron~$j$ in layer~$l$
+\item $z_j^{(l)} = \sum\limits_i w_{ij}^{(l)} * x_i^{(l-1)}$
+\item $a_j^{(l)} = \phi(z_j^{(l)})$
+\item $o = a^{(L)}$ is the output of the neural network
+\item $\eta$: learning rate (usually $\eta < 1$)
+\item $b^{(l)}$: bias unit layer $l$, either $1$ if there is a weight for it, or without weight if $b^{(l)}$ is adjusted directly during training
+\end{itemize}
+
+\begin{align*}
+\frac{\partial E}{\partial w_{ij}^{(L)}} &= \frac{\partial E}{\partial z_j^{(L)}} \frac{\partial z_j^{(L)}}{\partial w_{ij}^{(L)}}
+= \frac{\partial E}{\partial a_j^{(L)}} \frac{\partial a_j^{(L)}}{\partial z_j^{(L)}} \frac{\partial z_j^{(L)}}{\partial w_{ij}^{(L)}}\\
+\frac{\partial z_j^{(L)}}{\partial w_{ij}^{(L)}} &= \frac{\partial \sum_i w_{ij}^{(L)} * x_i^{(L-1)} }{\partial w_{ij}^{(L)}}
+=  x_i^{(L-1)}\\
+\frac{\partial a_j^{(L)}}{\partial z_j^{(L)}} &= \frac{\partial \phi(z_j^{(L)})}{\partial z_j^{(L)}}
+= (\phi(z_j^{(L)}) (1 - \phi(z_j^{(L)}))
+= a_j^{(L)} (1 - a_j^{(L)})
+= o_j (1 - o_j)\\
+\frac{\partial E}{\partial a_j^{(L)}} &= \frac{\partial E}{\partial o_j}
+= \frac{\partial \half \sum_{i=1}^k (t_i - o_i)^2}{\partial o_j}
+= \frac{\partial \half (t_j - o_j)^2}{\partial o_j}
+= - (t_j - o_j)\\
+\frac{\partial E}{\partial w_{ij}^{(L)}} &= - (t_j - o_j) o_j (1 - o_j) x_i^{(L-1)}\\
+\delta_j^{(L)} &= \frac{\partial E}{z_j^{(L)}}
+= (t_j - o_j) o_j (1 - o_j))\\
+\Delta w_{ij}^{(L)} &= - \eta \frac{\partial E}{\partial w_{ij}^{(L)}}
+= - \eta \delta_j^{(L)} x_i^{(L-1)}\\
+\delta_j^{(l)} &= o_j (1 - o_j) \sum_i \delta_i^{(l+1)} w_ji\\
+\Delta w_{ij}^{(l)} &= - \eta \delta_j^{(l)} x_i^{(l-1)}\\
+\end{align*}
+
+The algorithm can also be formulated using matrices.
+\begin{itemize}
+\item $X \in \mathbb{R}^{n \times m}$ input of training data
+\item $T \in \mathbb{R}^{n \times k}$ target output for training data
+\item $W^1,\dots,W^L$ weight matrices
+\end{itemize}
+\begin{align}
+\begin{split}
+A^{(0)} &= A\\
+Z^{(l)} &= A^{(l-1)} * W^{(1)}\\
+A^{(l)} &= \phi(Z^{(l)})\\
+O &= A^{(L)}\\
+E &= \half \sum (T - O) .* (T - O)\\
+\delta^{(L)} &= (T - O) .* O .* (1 - O)
+\end{split}
+\end{align}
