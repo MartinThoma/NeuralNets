@@ -1,4 +1,6 @@
 \section{Backpropagation}\label{sec:backpropagation}
+
+\subsection{Notation}
 \begin{itemize}
 \item $m$ inputs/features, $x \in \mathbb{R}^m$
 \item $k$ target outputs, $t \in \mathbb{R}^k$
@@ -8,48 +10,87 @@
 \item $\phi(y)$: activation function (\eg $\phi(y) = \sigma(y) = \frac{1}{1 + e^{-y}}$)
 \item $x_{ij}^{(l)}$: input $i$ of neuron $j$ in layer $l$
 \item $w_{ij}^{(l)}$: weight of connection from neuron~$i$ in layer~$l-1$ to neuron~$j$ in layer~$l$
-\item $z_j^{(l)} = \sum\limits_i w_{ij}^{(l)} * x_i^{(l-1)}$
+\item $z_j^{(l)} = \sum\limits_i w_{ij}^{(l)} * a_i^{(l-1)}$ with $a_i^{(0)} = x$
 \item $a_j^{(l)} = \phi(z_j^{(l)})$
 \item $o = a^{(L)}$ is the output of the neural network
 \item $\eta$: learning rate (usually $\eta < 1$)
-\item $b^{(l)}$: bias unit layer $l$, either $1$ if there is a weight for it, or without weight if $b^{(l)}$ is adjusted directly during training
+\item $b^{(l)}$: bias unit layer~$l$, either $1$ if there is a weight for it, or without weight if $b^{(l)}$ is adjusted directly during training
+\item $\delta_j^{(l)}$: error of neuron~$j$ in layer~$l$
 \end{itemize}
 
-\begin{align*}
+\subsection{Weight Updates in Output Layer}
+Backpropagation is generalization of the delta-rule. We minimize our error function $E$ by `going down' along the gradient. For a single training example~$(x, t)$, with $x$ as input and $t$ and desired output, $E$ is calculated from $o$ and $t$, where $o$ is the result of a forward propagation using $x$ and our weights $w_{ij}^{(l)}$. As the training example is fixed we can only adjust $w_{ij}^{(l)}$ to minimize $E$.\\
+We start with the gradient in our output layer:
+\begin{align}
 \frac{\partial E}{\partial w_{ij}^{(L)}} &= \frac{\partial E}{\partial z_j^{(L)}} \frac{\partial z_j^{(L)}}{\partial w_{ij}^{(L)}}
-= \frac{\partial E}{\partial a_j^{(L)}} \frac{\partial a_j^{(L)}}{\partial z_j^{(L)}} \frac{\partial z_j^{(L)}}{\partial w_{ij}^{(L)}}\\
+= \frac{\partial E}{\partial a_j^{(L)}} \frac{\partial a_j^{(L)}}{\partial z_j^{(L)}} \frac{\partial z_j^{(L)}}{\partial w_{ij}^{(L)}}
+ \comment{chain rule}\\
 \frac{\partial z_j^{(L)}}{\partial w_{ij}^{(L)}} &= \frac{\partial \sum_i w_{ij}^{(L)} * x_i^{(L-1)} }{\partial w_{ij}^{(L)}}
-=  x_i^{(L-1)}\\
+= a_i^{(L-1)}\\
 \frac{\partial a_j^{(L)}}{\partial z_j^{(L)}} &= \frac{\partial \phi(z_j^{(L)})}{\partial z_j^{(L)}}
 = (\phi(z_j^{(L)}) (1 - \phi(z_j^{(L)}))
-= a_j^{(L)} (1 - a_j^{(L)})
-= o_j (1 - o_j)\\
+= o_j (1 - o_j) \comment{sigmoid derivative, see \ref{sec:sigmoid}} \\
 \frac{\partial E}{\partial a_j^{(L)}} &= \frac{\partial E}{\partial o_j}
 = \frac{\partial \half \sum_{i=1}^k (t_i - o_i)^2}{\partial o_j}
-= \frac{\partial \half (t_j - o_j)^2}{\partial o_j}
-= - (t_j - o_j)\\
-\frac{\partial E}{\partial w_{ij}^{(L)}} &= - (t_j - o_j) o_j (1 - o_j) x_i^{(L-1)}\\
-\delta_j^{(L)} &= \frac{\partial E}{z_j^{(L)}}
-= (t_j - o_j) o_j (1 - o_j))\\
-\Delta w_{ij}^{(L)} &= - \eta \frac{\partial E}{\partial w_{ij}^{(L)}}
-= - \eta \delta_j^{(L)} x_i^{(L-1)}\\
-\delta_j^{(l)} &= o_j (1 - o_j) \sum_i \delta_i^{(l+1)} w_ji\\
-\Delta w_{ij}^{(l)} &= - \eta \delta_j^{(l)} x_i^{(l-1)}\\
-\end{align*}
+= (o_j - t_j) \comment{MSE derivative, see \ref{sec:mse}}\\
+\intertext{putting everything together}
+\frac{\partial E}{\partial w_{ij}^{(L)}} &= (o_j - t_j) o_j (1 - o_j) a_i^{(L-1)}
+\end{align}
+We can now define the error for neuron~$j$ as
+\begin{align}
+\begin{split}
+\delta_j^{(L)} &= \frac{\partial E}{z_j^{(L)}}\\
+&= \frac{\partial E}{a_j^{(L)}} \frac{\partial a_j^{(L)}}{z_j^{(L)}}\\
+&= (o_j - t_j) o_j (1 - o_j))
+\end{split}
+\end{align}
+And our weight update $\Delta w_{ij}^{(L)}$ and new weight $\hat w_{ij}^{(L)}$
+\begin{align}
+\Delta w_{ij}^{(L)} &= - \eta\, \frac{\partial E}{\partial w_{ij}^{(L)}}
+= - \eta \delta_j^{(L)} a_i^{(L-1)}\\
+\hat w_{ij}^{(L)} &= w_{ij}^{(L)} + \Delta w_{ij}^{(L)}
+\end{align}
 
+
+\subsection{Weight Outputs for Hidden Layers}
+For hidden layers we need to propagate the error back to the neuron~$j$ in layer~$l$. Intuitively we put in the error in the output layer and use the weights to propagate it backwards.
+\begin{align}
+\delta_j^{(l)} &= \frac{\partial E}{\partial z_j^{(l)}} = \frac{\partial E}{\partial a_j^{(l)}} \frac{\partial a_j^{(l)}}{\partial z_j^{(l)}}\\
+\frac{\partial E}{\partial a_j^{(l)}}
+&= \sum_k \frac{\partial E}{\partial z_k^{(l+1)}} \frac{\partial z_k^{(l+1)}}{\partial a_j^{(l)}}\\
+&= \sum_k \frac{\partial E}{\partial z_k^{(l+1)}} \frac{\partial \sum_i w_{ik}^{(l+1)} * a_i^{(l)}}{\partial a_j^{(l)}}\\
+&= \sum_k \frac{\partial E}{\partial z_k^{(l+1)}} w_{jk}^{(l+1)}\\
+&= \sum_k \delta_k^{(l+1)} w_{jk}^{(l+1)}\\
+\frac{\partial a_j^{(l)}}{\partial z_j^{(l)}} &= a_j^{(l)} (1 - a_j^{(l)}) \comment{sigmoid derivative}\\
+\delta_j^{(l)} &= a_j^{(l)} (1 - a_j^{(l)}) \sum_k \delta_k^{(l+1)} w_{jk}^{(l+1)}
+\end{align}
+And finally our weight updates for hidden neurons
+\begin{align}
+\Delta w_{ij}^{(l)} &= - \eta \frac{\partial E}{\partial w_{ij}^{(l)}}\\
+&= - \eta \frac{\partial E}{\partial z_j^{(l)}} \frac{\partial z_j^{(l)}}{\partial w_{ij}^{(l)}}\\
+&= - \eta\, \delta_j^{(l)} a_i^{(l-1)}\\
+\hat w_{ij}^{(l)} &= w_{ij}^{(l)} + \Delta w_{ij}^{(l)}
+\end{align}
+
+
+\subsection{Backpropagation using Matrix Notation}
 The algorithm can also be formulated using matrices.
 \begin{itemize}
 \item $X \in \mathbb{R}^{n \times m}$ input of training data
 \item $T \in \mathbb{R}^{n \times k}$ target output for training data
-\item $W^1,\dots,W^L$ weight matrices
+\item $W^{(1)},\dots,W^{(L)}$ weight matrices
+\item $\delta^{(1)},\dots,\delta^{(L)}$ error matrices
 \end{itemize}
+
+TODO, the following might me incomplete and wrong
 \begin{align}
-\begin{split}
-A^{(0)} &= A\\
-Z^{(l)} &= A^{(l-1)} * W^{(1)}\\
+A^{(0)} &= X\\
+Z^{(l)} &= A^{(l-1)} * W^{(l)}\\
 A^{(l)} &= \phi(Z^{(l)})\\
 O &= A^{(L)}\\
-E &= \half \sum (T - O) .* (T - O)\\
-\delta^{(L)} &= (T - O) .* O .* (1 - O)
-\end{split}
+E &= \half \sum (T - O) \circ (T - O)\\
+\delta^{(L)} &= (O - T) \circ O \circ (1 - O)\\
+\delta^{(l)} &= A^{(l)} (1 - A^{(l)}) W^{(l+1)} \delta^{(l+1)}
+\Delta W^{(l)} &= - \eta\, \delta^{(l)} A^{(l-1)}\\
+\hat W^{(l)} &= W^{(l)} + \Delta W^{(l)}
 \end{align}
