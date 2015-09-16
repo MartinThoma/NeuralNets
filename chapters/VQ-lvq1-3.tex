@@ -1,7 +1,86 @@
-\subsection{Learning Vector Quantization}\label{sec:lvq}
+\section{Learning Vector Quantization}\label{sec:lvq}
+Literature: \cite{Kohonen2001,Kohonen1990}
 
-\subsection{LVQ 1}
+\Gls{LVQ} are used for statistical classification. Supervised learning is used to train multiple codebook vector per class. The class of new observations is then determined by the class of the closest codebook vector.
 
-\subsection{LVQ 2.1}
+Kohonen published several versions of \gls{LVQ} that only differ slightly an the conditions and formulae for updates during the training.
 
-\subsection{LVQ 3}
+Notation:
+\begin{itemize}
+\item discrete time domain with $t=0,1,2,\cdots$
+\item $x(t)$ is an input sample
+\item $m_i$ our vector vectors and $m_i(t)$ their sequential values
+\item classes $S_1,\cdots,S_K$
+\item each codebook vectors belongs to exactly one class, but each class has multiple codebook vectors
+\item $d(x, y)$ is a distance measure (usually Euclidean distance is used)
+\item $c = \argmin\limits_i d(x, m_i)$ is the index of the closest codebook vector
+\item $\delta_{ij}$ is the Kronecker delta ($\delta_{ij} = 1$ for $i=j$, $\delta_{ij}=0$ for $i\neq j$)
+\item $\eta(t)$ learning rate ate time $t$
+\item $w$ window width (see LVQ2)
+\end{itemize}
+
+For convenience we also define $s(t)$ as 
+\begin{equation}
+s(t) = \begin{cases}
+	+1 & \text{if $x$ and $m_c$ belong to the same class}\\
+	-1 & \text{if $x$ and $m_c$ belong to different classes}
+	\end{cases}
+\end{equation}
+
+\subsection{LVQ1}
+Update closest codebook vector $m_c$ depending on whether it has the same class as $x$ or not.
+\begin{align}
+\intertext{If $x$ and $m_c(t)$ belong to the same class set}
+m_c(t+1) = m_c(t) + \eta(t) (x - m_c(t))
+\intertext{If $x$ and $m_c(t)$ belong to different classes}
+m_c(t+1) = m_c(t) - \eta(t) (x - m_c(t))
+\intertext{Leave the other codebook vectors unchanged}
+m_i(t+1) = m_i(t) \text{ for } i \neq c
+\end{align}
+
+Or in a compressed form:
+\begin{equation}
+m_i(t+1) = m_i(t) + \eta(t) s(t) \delta_{ci} (x(t) - m_i(t))
+\end{equation}
+
+\subsection{OLVQ}
+Determine the optimal learning rate $\eta_i(t)$ for each codebook vector $m_i$ for fastest convergence.
+
+\begin{equation}
+\eta_c(t) = \frac{\eta_c(t-1)}{1 + s(t) \eta_c(t-1)}
+\end{equation}
+
+Modify update rule from LVQ1.
+\begin{equation}
+m_i(t+1) = [1 - \eta_i(t) s(t) \delta_{ci}] m_i(t) + \eta_i(t) s(t) \delta_{ci} x(t)
+\end{equation}
+
+This modification will not work for LVQ2, but could be applied to LVQ3.
+
+\subsection{LVQ2.1}
+$m_i$ and $m_j$ are the two closest codebook vectors to $x$. One of them must belong to the correct class $x$ and the other to a different class. Moreover, $x$ must be inside a `window'. The window is defined around the mid-plane of $m_i$ and $m_j$ and depends on the window width $w$.
+
+\begin{equation}
+\min\{ \frac{d(x, m_i)}{d(x, m_j)}, \frac{d(x, m_j)}{d(x, m_i)} \} > \frac{1-w}{1+w}
+\end{equation}
+
+Good values for $w$ are in $[0.2, 0.3]$.
+
+Assume that $m_j$ belongs to the same class as $x$ ($\Rightarrow x$ and $m_i$ belong to different class), then $m_i$ and $m_j$ are updated simultaneously and similar to LVQ1.
+
+\begin{align}
+\begin{split}
+m_i(t+1) &= m_i(t) - \eta(t) [x(t) - m_i(t)]\\
+m_j(t+1) &= m_j(t) + \eta(t) [x(t) - m_j(t)]
+\end{split}
+\end{align}
+
+In the original LVQ2 $m_i$ had to be the closest codebook vector and belong to a different class.
+
+\subsection{LVQ3}
+LVQ3 has the same update rule as LVQ2.1, but in case that $x, m_i$ and $m_j$ all belong to the same class we will perform the following update:
+\begin{equation}
+m_k(t+1) = m_k(t) + \epsilon \eta(t) [x(t) - m_k(t)] \quad for k \in {i, j}
+\end{equation}
+
+Applicable values for $\epsilon$ are between $0.1$ and $0.5$ and seem to depend on the window size.

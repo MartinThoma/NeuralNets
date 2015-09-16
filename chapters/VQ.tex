@@ -1,28 +1,23 @@
-\chapter{Vector Quantization}\label{chapter:vq}
-TODO
+\chapter{Unsupervised Vector Quantization}\label{chapter:clustering}
+Also called \emph{Clustering}.
 
+Notation used in this chapter:
 \begin{itemize}
 \item $N$ observations/training examples, $x_1, ..., x_N$
 \item fixed number of clusters/classes $K$
 \item $C(i) = K$ assigns observation $x_i$ to a cluster $k$ (typical each observation is only in one cluster)
-\item $\mu_k$: centroid of cluster $k$
-\item $N_k$: number of observations that belong to cluster k ($N_k = \sum\limits_{C(i)=k} 1$)
+\item $\mu_k$ centroid of cluster $k$
+\item $N_k$ number of observations that belong to cluster k ($N_k = \sum\limits_{C(i)=k} 1$)
+\item $d(x, y)$ is a dissimilarity measure (usually the squared Euclidean distance\footnote{Squared Euclidean distance $d(x, y) = ||x-y||^2 = (x-y)^T (x-y) = \sum_i (x_i-y_i)^2$}
+\item $u_{ik}$ degree of membership of training example~$i$ to cluster~$k$ (if used in algorithm)
+\item $m \geq 1$ the `fuzzifier' parameter for Fuzzy k-Means (\ref{sec:fuzzy-kmeans}). Influences sharpness of the clusters, for $m \to \inf$ $u_{ik}$ will be close to $\frac{1}{K}$ (not sharp). For $m$ close to $1$ the $u_{ik}$s will be close to $0$ or $1$. Typical values are between $1$ and $2.5$.
 \end{itemize}
 
-\section{Unsupervised Vector Quantization}
-Also called clustering.
-
-\subsection{Loss Functions}
-\begin{itemize}
-\item Intra-class scatter: $W(C) = \frac{1}{2} \sum\limits_{k=1}^K \sum\limits_{C(i)=k} \sum\limits_{C(j)=k} d(x_i, x_j)$
-\item Inter-class scatter: $B(C) = \frac{1}{2} \sum\limits_{k=1}^K \sum\limits_{C(i)=k} \sum\limits_{C(j)\neq k} d(x_i, x_j)$
-\item Total scatter: $T(C) = W(C) + B(C) = \frac{1}{2} \sum\limits_{i=1}^N \sum_{j=1}^N d(x_i, x_j)$
-\item Minimizing $W(C)$ is equivalent to maximizing $B(C)$
-\end{itemize}
+\input{chapters/VQ-loss-functions}
 
 \input{chapters/VQ-kmeans}
 
-\section{Supervised Vector Quantization}
+\chapter{Supervised Vector Quantization}\label{chapter:vq}
 
 \input{chapters/VQ-distortion-measures}
 
