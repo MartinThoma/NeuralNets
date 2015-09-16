@@ -24,7 +24,7 @@ E_{\text{MSE}} &= \half \sum_{i=1}^k (t_i - o_i)^2\\
 \end{align}
 
 \subsection{Cross Entropy Error}\label{sec:ce}
-\Gls{CE} works great well on classifications tasks ($t_i$ is either $0$ or $1$ and $o_i$ is the class probability computed by the network).
+\Gls{CE} works great well on classifications tasks. $t_i$ is either $0$ or $1$ and $o_i$ is the class probability computed by the network $\Rightarrow o_i \in (0, 1]$ as $log(0)$ is not defined.
 \begin{equation}\label{eq:ce}
 E_{\text{CE}} = - \sum_{i=1}^k \left( t_i \log(o_i) + (1 - t_i) \log(1 - o_i) \right)
 \end{equation}
@@ -33,6 +33,41 @@ This will derive to:
 \begin{split}
 \frac{\partial E_{\text{CE}}}{\partial o_j} &= - \frac{\partial}{\partial o_j} \sum_{i=1}^k \left( t_i \log(o_i) + (1 - t_i) \log(1 - o_i) \right)\\
 &= - \frac{\partial}{\partial o_j} t_j \log(o_j) - \frac{\partial}{\partial o_j} (1 - t_j) \log(1 - o_j)\\
-&= - \frac{t_j}{o_j} + \frac{1 - t_j}{1 - o_j}
+&= - \frac{t_j}{o_j} + \frac{1 - t_j}{1 - o_j}\\
+&= \frac{1 - t_j}{1 - o_j} - \frac{t_j}{o_j}
 \end{split}
 \end{align}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	axis lines = middle,
+	xlabel = $o_j$,
+	ylabel = $E$,
+	ymin = -1,
+	ymax = 5,
+	xmin = -0.5,
+	xmax = 1.5,
+	clip = false,
+]
+\addplot[
+	domain = 0:0.99,
+	samples = 100, 
+	color = orange,
+	thick, smooth,
+	]
+{-ln(x)}
+node[left,pos=0] {$-\ln(o_j)$};
+\addplot[
+	domain = 0.01:1,
+	samples = 100, 
+	color = red,
+	thick, smooth,
+	]
+{-ln(1-x)}
+node[right,pos=1] {$-\ln(1-o_j)$};	
+\end{axis}
+\end{tikzpicture}
+\caption{Error produced for $t_j=1$ (orange) and for $t_j=0$ (red). $o_j$ must be in range $(0,1]$, otherwise the logarithm can be complex or undefined or the error gets rediciously large.}
+\end{figure}
