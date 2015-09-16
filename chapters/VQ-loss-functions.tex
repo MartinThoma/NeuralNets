@@ -1,0 +1,7 @@
+\section{Loss Functions for Clustering}
+\begin{itemize}
+\item Intra-class scatter: $W(C) = \frac{1}{2} \sum\limits_{k=1}^K \sum\limits_{C(i)=k} \sum\limits_{C(j)=k} d(x_i, x_j)$
+\item Inter-class scatter: $B(C) = \frac{1}{2} \sum\limits_{k=1}^K \sum\limits_{C(i)=k} \sum\limits_{C(j)\neq k} d(x_i, x_j)$
+\item Total scatter: $T(C) = W(C) + B(C) = \frac{1}{2} \sum\limits_{i=1}^N \sum\limits_{j=1}^N d(x_i, x_j)$
+\item Minimizing $W(C)$ is equivalent to maximizing $B(C)$
+\end{itemize}

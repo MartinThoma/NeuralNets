@@ -1,17 +1,43 @@
-\subsection{k-Means}
-% Finding $C^*(i)$ by enumeration is too time-consuming.
-% ! Finding C*(i) by enumeration is too time-consuming
-% ￼tance can be used by􏰀redefining the x values (Exercise 14.1). 2 ij2
-% d(x,x′)= (x −x′ ) =||x −x′|| ! Instead use itei raitive greeidj y diejscent i i
-% p
-% ￼The K-means algorithm is one of the most popular iterative des The within-point scatter (14.28) can be written as
-% j=1 ! Convergenctertiongamloceathlodptsi.mIatisintendedforsituationsinwhichallvariab
-% ￼! Dissimilarity measure
-Minimize $$W(C) = \frac{1}{2} \sum\limits_{k=1}^K \sum\limits_{C(i)=k} \sum\limits_{C(j)=k} ||x_i - x_j||^2 = \sum\limits_{k=1}^K N_k \sum\limits_{C(i)=k} ||x_i - \mu_k||^2$$
+\section{k-Means}
+Finding $C^*(i)$ by enumeration is too time-consuming. Instead use iterative greedy descent which leads to a local optima.
+The loss function is defined as
+\begin{equation}
+J = \sum_{k=1}^K \sum_{C(i)=k} d(x_i, \mu_k)
+\end{equation}
 
-\subsection{Lloyd's Algorithm}
+Using the squared Euclidean distance, $d(x_i, \mu_k) = ||x_i - \mu_k||^2$, will effectively assign each sample to the closet center.
+
+A slightly different definition is to minimize our already defined $W(C)$
+\begin{equation}
+W(C) = \frac{1}{2} \sum\limits_{k=1}^K \sum\limits_{C(i)=k} \sum\limits_{C(j)=k} ||x_i - x_j||^2 = \sum\limits_{k=1}^K N_k \sum\limits_{C(i)=k} ||x_i - \mu_k||^2
+\end{equation}
+
+Also called \emph{Lloyd's Algorithm} we optimize for $J$ in a greedy fashion.
 \begin{enumerate}
 \item \textbf{Classify}: Assign each observation $i$ to the nearest centroid: $$C(i) = \argmin\limits_{1\leq k \leq K} ||x_i - \mu_k||^2$$
 \item \textbf{Recenter}: For each class $k$, compute a new centroid as the mean of the updated class assignments: $$\mu_k = \frac{\sum\limits_{C(i)=k} x_i}{N_k}$$
-\item \textbf{Repeat until stopping criteria fulfilled}
+\item \textbf{Repeat step 1 and 2 until stopping criteria fulfilled (\eg centers stop moving/ C(i) unchanged).}
 \end{enumerate}
+
+During the course of the k-means algorithm, the loss function monotonically decreases (in both steps) into a local minimum.
+
+\section{Fuzzy k-Means}\label{sec:fuzzy-kmeans}
+Observation does not belong strictly to one cluster, but has a member ship degree $u_{ik}$ for each cluster $k$.
+
+TODO: Do we need $\sum_{k=1}^K u_{ik} = 1$ ?
+
+Our new loss function is:
+\begin{equation}
+J_m = \sum_{i=1}^N \sum_{k=1}^K u_{ik} d(x_i, \mu_k)
+\end{equation}
+
+\begin{enumerate}
+\item \textbf{Compute degree of membership:}
+	$$u_{ik} = \left[ \sum_{j=1}^K \left( \frac{d(x_i, \mu_k)}{d(\mu_j, \mu_k)} \right)^{\frac{2}{m-1}} \right]^{-1}$$
+\item \textbf{Recenter:}
+	$$\mu_k = \frac{\sum_{i=1}^N u_{ik}^m \, x_i}{\sum_{i=1}^N u_{ik}^m}$$
+\item \textbf{Repeat step 1 and 2 until stopping criteria fulfilled.}
+\end{enumerate}
+
+\section{LBG-Algorithm}
+% see http://www.data-compression.com/vq.html#lbg
