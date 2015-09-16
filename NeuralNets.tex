@@ -1,6 +1,5 @@
-\documentclass[a4paper]{book}
+\documentclass[a4paper,oneside]{book}
 
-% \usepackage[english]{babel}
 \usepackage[british]{babel}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -8,6 +7,7 @@
 \usepackage{mathtools}
 \usepackage{amsfonts}
 \usepackage{graphicx}
+ \usepackage{parskip} % do not intend first line of paragraph
 
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.12}
@@ -38,10 +38,6 @@
 \newcommand{\eg}{e.\,g. }
 \newcommand{\wrt}{w.\,r.\,t. }
 
-\newcommand{\comment}[1]{%
-  \text{\phantom{(#1)}} \tag{#1}
-}
-
 \title{Neuronal Networks \\ \large Formulae Collection}
 \author{Marvin Ritter\\
 	\href{mailtto:marvin.ritter@gmail.com}{marvin.ritter@gmail.com}
@@ -55,6 +51,9 @@
             pdfkeywords={Artificial Neuronal Networks Machine Learning},
             pdfproducer={LaTeX with hyperref},
             pdfcreator={pdflatex}]{hyperref}
+% adjust driver used by hyperref for tex4ht
+\usepackage{hyperref}
+\ifx\HCode\UnDef\else\hypersetup{tex4ht}\fi
 
 \begin{document}
 

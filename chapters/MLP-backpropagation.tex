@@ -24,15 +24,15 @@ We start with the gradient in our output layer:
 \begin{align}
 \frac{\partial E}{\partial w_{ij}^{(L)}} &= \frac{\partial E}{\partial z_j^{(L)}} \frac{\partial z_j^{(L)}}{\partial w_{ij}^{(L)}}
 = \frac{\partial E}{\partial a_j^{(L)}} \frac{\partial a_j^{(L)}}{\partial z_j^{(L)}} \frac{\partial z_j^{(L)}}{\partial w_{ij}^{(L)}}
- \comment{chain rule}\\
+ \tag{chain rule}\\
 \frac{\partial z_j^{(L)}}{\partial w_{ij}^{(L)}} &= \frac{\partial \sum_i w_{ij}^{(L)} * x_i^{(L-1)} }{\partial w_{ij}^{(L)}}
 = a_i^{(L-1)}\\
 \frac{\partial a_j^{(L)}}{\partial z_j^{(L)}} &= \frac{\partial \phi(z_j^{(L)})}{\partial z_j^{(L)}}
 = (\phi(z_j^{(L)}) (1 - \phi(z_j^{(L)}))
-= o_j (1 - o_j) \comment{sigmoid derivative, see \ref{sec:sigmoid}} \\
+= o_j (1 - o_j) \tag{sigmoid derivative, see \ref{sec:sigmoid}} \\
 \frac{\partial E}{\partial a_j^{(L)}} &= \frac{\partial E}{\partial o_j}
 = \frac{\partial \half \sum_{i=1}^k (t_i - o_i)^2}{\partial o_j}
-= (o_j - t_j) \comment{MSE derivative, see \ref{sec:mse}}\\
+= (o_j - t_j) \tag{MSE derivative, see \ref{sec:mse}}\\
 \intertext{putting everything together}
 \frac{\partial E}{\partial w_{ij}^{(L)}} &= (o_j - t_j) o_j (1 - o_j) a_i^{(L-1)}
 \end{align}
@@ -61,7 +61,7 @@ For hidden layers we need to propagate the error back to the neuron~$j$ in layer
 &= \sum_k \frac{\partial E}{\partial z_k^{(l+1)}} \frac{\partial \sum_i w_{ik}^{(l+1)} * a_i^{(l)}}{\partial a_j^{(l)}}\\
 &= \sum_k \frac{\partial E}{\partial z_k^{(l+1)}} w_{jk}^{(l+1)}\\
 &= \sum_k \delta_k^{(l+1)} w_{jk}^{(l+1)}\\
-\frac{\partial a_j^{(l)}}{\partial z_j^{(l)}} &= a_j^{(l)} (1 - a_j^{(l)}) \comment{sigmoid derivative}\\
+\frac{\partial a_j^{(l)}}{\partial z_j^{(l)}} &= a_j^{(l)} (1 - a_j^{(l)}) \tag{sigmoid derivative}\\
 \delta_j^{(l)} &= a_j^{(l)} (1 - a_j^{(l)}) \sum_k \delta_k^{(l+1)} w_{jk}^{(l+1)}
 \end{align}
 And finally our weight updates for hidden neurons

@@ -7,18 +7,28 @@ Corrections, supplements (or wishes) and links to good sources/ papers are very 
 
 ToDo's
 ------
-- BGD vs SGD vs SGD with minibatches
-- overview of ML fields with example algorithms
-- overfitting and underfitting (detect and prevont)
+- Compare BGD, SGD and SGD with minibatches, 
+- Overview of Pattern recognition (graphic + examples)
+- Add useful literature 
+	- [ ] books
+	- [ ] papers
+	- [ ] Internet tutorials/ demos
+- Explain overfitting and underfitting (what is it, how to detect, how to prevent)
 - Hyperparamaters \Phi (examples, how to train? => development set)
 - DA
 - RBM
-- differences between: stacked denoising autoencoders, stacked sparse autoencoders, stacked restricted boltzmann machine
-- what is Curriculum Learning?
+- Differences between: stacked denoising autoencoders, stacked sparse autoencoders, stacked restricted boltzmann machine
+- What is Curriculum Learning?
 - Dropout
 - Maxout
-- common datasets/ benchmarks
+- Chapter on common datasets/ benchmarks
 	- MNIST
 	- CIFAR-10: 60000 32x32 colour images in 10 classes, with 6000 images per class. There are 50000 training images and 10000 test images. 
-- overview off all architectures (feed forward networks: perceptron, mlp, dnn; shared parameters: TDNN = Convolutional NN, recurrent neural networks) - What are conjugate gradients, Levenberg-Marquardt, etc.?
+- Overview off network architectures (feed forward networks: perceptron, MLP, DNN; shared parameters: TDNN, CNN, RNN)
+- Conjugate gradient method
+- What is the Schwarz Criterion for k-Means
 
+Open Questions
+--------------
+- Backpropagation requires the activation function to be differentiable. How can be use non differentiable activation functions, e. g. step function?
+- Why is LBG better than k-Means?
