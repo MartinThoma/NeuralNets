@@ -29,8 +29,9 @@
 % }
 
 % Additional math operators
-\DeclareMathOperator*{\argmin}{arg\,min}
-\DeclareMathOperator*{\argmax}{arg\,max}
+% \DeclareMathOperator*{\argmin}{\text{arg\,min}}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}} % same as \DeclareMathOperator*{\argmax}{arg\,max} but also works with MathJax
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
 
 % Shortcuts
 \newcommand{\half}{\frac{1}{2}}
@@ -44,16 +45,16 @@
 }
 
 % include hyperref packeg
-\usepackage[pdftex,
-            pdfauthor={Marvin Ritter},
-            pdftitle={Neuronal Networks - Formulae Collection},
-            pdfsubject={This is my personal collection of formulas in the field of neural networks.},
-            pdfkeywords={Artificial Neuronal Networks Machine Learning},
-            pdfproducer={LaTeX with hyperref},
-            pdfcreator={pdflatex}]{hyperref}
+% \usepackage[pdftex,
+            % pdfauthor={Marvin Ritter},
+            % pdftitle={Neuronal Networks - Formulae Collection},
+            % pdfsubject={This is my personal collection of formulas in the field of neural networks.},
+            % pdfkeywords={Artificial Neuronal Networks Machine Learning},
+            % pdfproducer={LaTeX with hyperref},
+            % pdfcreator={pdflatex}]{hyperref}
 % adjust driver used by hyperref for tex4ht
 \usepackage{hyperref}
-\ifx\HCode\UnDef\else\hypersetup{tex4ht}\fi
+% \ifx\HCode\UnDef\else\hypersetup{tex4ht}\fi
 
 \begin{document}
 
@@ -67,12 +68,12 @@ Corrections, supplements (or wishes) and links to good sources/ papers are very 
 \tableofcontents 
 
 \include{chapters/VQ}
-\include{chapters/MLP}
-\include{chapters/Preprocessing}
+% \include{chapters/MLP}
+% \include{chapters/Preprocessing}
 
-\bibliographystyle{apalike}
-\bibliography{Remote}
+% \bibliographystyle{apalike}
+% \bibliography{Remote}
 
-\printglossary[type=\acronymtype]
+% \printglossary[type=\acronymtype]
 
 \end{document}

@@ -1,0 +1,2277 @@
+<!DOCTYPE html> 
+<html> 
+<head> <title>Neuronal Networks
+Formulae Collection</title> 
+<meta charset="UTF-8" /> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" /> 
+<link rel="stylesheet" type="text/css" href="NeuralNets.css" /> 
+<script type="text/javascript" 
+src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" 
+></script> 
+<style type="text/css"> 
+.MathJax_MathML {text-indent: 0;} 
+</style> 
+</head><body 
+>
+<div class="maketitle">
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+
+<h2 class="titleHead">Neuronal Networks<br />
+Formulae Collection</h2>
+      <div class="author" ><span 
+class="ecrm-1200">Marvin Ritter</span>
+<br /><a 
+href="mailtto:marvin.ritter@gmail.com" ><span 
+class="ecrm-1200">marvin.ritter@gmail.com</span></a> </div>
+<br />
+<div class="date" ><span 
+class="ecrm-1200">16th</span><span 
+class="ecrm-1200"> September 2015</span></div>
+                                                                  
+
+                                                                  
+</div>
+                                                                  
+
+                                                                  
+<h2 class="likechapterHead"><a 
+ id="x1-1000"></a>Introduction</h2> This is my personal collection of formulae in the ﬁeld of neural
+networks. I started it in preparation to my exam on the neural nets at Karlsruhe
+Institute of Technology (KIT). Even so the content will be similar to the course it is
+neither limited to it nor linked with the course in any means. <span 
+class="ecti-1000">This is not oﬃcial</span>
+<span 
+class="ecti-1000">script and may contain errors and lag completeness.</span>
+<!--l. 66--><p class="noindent" >Corrections, supplements (or wishes) and links to good sources/ papers are very
+welcome. Just mail me to <a 
+href="mailtto:marvin.ritter@gmail.com" >marvin.ritter@gmail.com</a>.
+                                                                  
+
+                                                                  
+</p>
+<h2 class="likechapterHead"><a 
+ id="x1-2000"></a>Contents</h2> <div class="tableofcontents">
+<span class="chapterToc" >1 <a 
+href="#x1-30001" id="QQ2-1-3">Unsupervised Vector Quantization</a></span>
+<br /> <span class="sectionToc" >1.1 <a 
+href="#x1-40001.1" id="QQ2-1-4">Loss Functions for Clustering</a></span>
+<br /> <span class="sectionToc" >1.2 <a 
+href="#x1-50001.2" id="QQ2-1-5">k-Means</a></span>
+<br /> <span class="sectionToc" >1.3 <a 
+href="#x1-60001.3" id="QQ2-1-6">Fuzzy k-Means</a></span>
+<br /> <span class="sectionToc" >1.4 <a 
+href="#x1-70001.4" id="QQ2-1-7">LBG-Algorithm</a></span>
+<br /><span class="chapterToc" >2 <a 
+href="#x1-80002" id="QQ2-1-8">Supervised Vector Quantization</a></span>
+<br /> <span class="sectionToc" >2.1 <a 
+href="#x1-90002.1" id="QQ2-1-9">Distortion Measures</a></span>
+<br /> <span class="sectionToc" >2.2 <a 
+href="#x1-100002.2" id="QQ2-1-10">Learning Vector Quantization</a></span>
+<br />  <span class="subsectionToc" >2.2.1 <a 
+href="#x1-110002.2.1" id="QQ2-1-11">LVQ1</a></span>
+<br />  <span class="subsectionToc" >2.2.2 <a 
+href="#x1-120002.2.2" id="QQ2-1-12">OLVQ</a></span>
+<br />  <span class="subsectionToc" >2.2.3 <a 
+href="#x1-130002.2.3" id="QQ2-1-13">LVQ2.1</a></span>
+<br />  <span class="subsectionToc" >2.2.4 <a 
+href="#x1-140002.2.4" id="QQ2-1-14">LVQ3</a></span>
+<br /> <span class="sectionToc" >2.3 <a 
+href="#x1-150002.3" id="QQ2-1-15">Self-Organizing Maps</a></span>
+</div>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<h2 class="chapterHead"><span class="titlemark">Chapter 1</span><br /><a 
+ id="x1-30001"></a>Unsupervised Vector Quantization</h2> Also called <span 
+class="ecti-1000">Clustering</span>.
+<!--l. 4--><p class="noindent" >Notation used in this chapter: </p>
+     <ul class="itemize1">
+     <li class="itemize"><!--l. 6--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>N</mi></math>
+     observations/training examples, <!--l. 6--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mn>1</mn></mrow></msub 
+><mo 
+class="MathClass-punc">,</mo><mo 
+class="MathClass-punc">.</mo><mo 
+class="MathClass-punc">.</mo><mo 
+class="MathClass-punc">.</mo><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>N</mi></mrow></msub 
+></math>
+     </li>
+     <li class="itemize">ﬁxed number of clusters/classes <!--l. 7--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>K</mi></math>
+     </li>
+     <li class="itemize"><!--l. 8--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>C</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>i</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <mi 
+>K</mi></math>
+     assigns observation <!--l. 8--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></math>
+     to a cluster <!--l. 8--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>k</mi></math>
+     (typical each observation is only in one cluster)
+     </li>
+     <li class="itemize"><!--l. 9--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>μ</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+></math>
+     centroid of cluster <!--l. 9--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>k</mi></math>
+     </li>
+     <li class="itemize"><!--l. 10--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>N</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+></math>
+     number of observations that belong to cluster k (<!--l. 10--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>N</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+> <mo 
+class="MathClass-rel">=</mo><munder class="msub"><mrow 
+><mo 
+class="MathClass-op"> ∑</mo>
+  </mrow><mrow 
+><mi 
+>C</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>i</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mo 
+class="MathClass-rel">=</mo><mi 
+>k</mi></mrow></munder 
+><mn>1</mn></math>)
+     </li>
+     <li class="itemize"><!--l. 11--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><mi 
+>y</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+     is a dissimilarity measure (usually the squared Euclidean distance<span class="footnote-mark"><a 
+href="NeuralNets2.html#fn1x2"><sup class="textsuperscript">1</sup></a></span><a 
+ id="x1-3001f1"></a> 
+     </li>
+     <li class="itemize"><!--l. 12--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>u</mi></mrow><mrow 
+><mi 
+>i</mi><mi 
+>k</mi></mrow></msub 
+></math>
+     degree of membership of training example <!--l. 12--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>i</mi></math>
+     to cluster <!--l. 12--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>k</mi></math>
+     (if used in algorithm)
+     </li>
+     <li class="itemize"><!--l. 13--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>m</mi> <mo 
+class="MathClass-rel">≥</mo> <mn>1</mn></math>
+     the ‘fuzziﬁer&#x2019; parameter for Fuzzy k-Means (<a 
+href="#x1-60001.3">1.3<!--tex4ht:ref: sec:fuzzy-kmeans --></a>). Inﬂuences sharpness of
+     the clusters, for <!--l. 13--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>m</mi> <mo 
+class="MathClass-rel">→</mo><mo class="qopname"> inf</mo></math>
+     <!--l. 13--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>u</mi></mrow><mrow 
+><mi 
+>i</mi><mi 
+>k</mi></mrow></msub 
+></math>
+     will be close to <!--l. 13--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" > <mfrac><mrow 
+><mn>1</mn></mrow>
+<mrow 
+><mi 
+>K</mi></mrow></mfrac></math>
+     (not sharp). For <!--l. 13--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>m</mi></math>
+     close to <!--l. 13--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mn>1</mn></math>
+     the <!--l. 13--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>u</mi></mrow><mrow 
+><mi 
+>i</mi><mi 
+>k</mi></mrow></msub 
+></math>s
+     will be close to <!--l. 13--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mn>0</mn></math>
+     or <!--l. 13--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mn>1</mn></math>.
+     Typical values are between <!--l. 13--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mn>1</mn></math>
+     and <!--l. 13--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mn>2</mn><mo 
+class="MathClass-punc">.</mo><mn>5</mn></math>.</li></ul>
+<h3 class="sectionHead"><span class="titlemark">1.1   </span> <a 
+ id="x1-40001.1"></a>Loss Functions for Clustering</h3>
+                                                                  
+
+                                                                  
+     <ul class="itemize1">
+     <li class="itemize">Intra-class scatter: <!--l. 3--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>W</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>C</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <mfrac><mrow 
+><mn>1</mn></mrow> 
+<mrow 
+><mn>2</mn></mrow></mfrac><munderover accentunder="false" accent="false"><mrow  
+><mo 
+class="MathClass-op"> ∑</mo>
+  </mrow><mrow 
+><mi 
+>k</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>K</mi></mrow></munderover 
+><munder class="msub"><mrow 
+><mo 
+class="MathClass-op"> ∑</mo>
+  </mrow><mrow 
+><mi 
+>C</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>i</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mo 
+class="MathClass-rel">=</mo><mi 
+>k</mi></mrow></munder 
+><munder class="msub"><mrow 
+><mo 
+class="MathClass-op"> ∑</mo>
+  </mrow><mrow 
+><mi 
+>C</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>j</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mo 
+class="MathClass-rel">=</mo><mi 
+>k</mi></mrow></munder 
+><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+     </li>
+     <li class="itemize">Inter-class scatter: <!--l. 4--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>B</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>C</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <mfrac><mrow 
+><mn>1</mn></mrow> 
+<mrow 
+><mn>2</mn></mrow></mfrac><munderover accentunder="false" accent="false"><mrow  
+><mo 
+class="MathClass-op"> ∑</mo>
+  </mrow><mrow 
+><mi 
+>k</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>K</mi></mrow></munderover 
+><munder class="msub"><mrow 
+><mo 
+class="MathClass-op"> ∑</mo>
+  </mrow><mrow 
+><mi 
+>C</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>i</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mo 
+class="MathClass-rel">=</mo><mi 
+>k</mi></mrow></munder 
+><munder class="msub"><mrow 
+><mo 
+class="MathClass-op"> ∑</mo>
+  </mrow><mrow 
+><mi 
+>C</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>j</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mo 
+class="MathClass-rel">≠</mo><mi 
+>k</mi></mrow></munder 
+><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+     </li>
+     <li class="itemize">Total scatter: <!--l. 5--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>T</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>C</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <mi 
+>W</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>C</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-bin">+</mo> <mi 
+>B</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>C</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <mfrac><mrow 
+><mn>1</mn></mrow> 
+<mrow 
+><mn>2</mn></mrow></mfrac><munderover accentunder="false" accent="false"><mrow  
+><mo 
+class="MathClass-op"> ∑</mo>
+  </mrow><mrow 
+><mi 
+>i</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>N</mi></mrow></munderover 
+><munderover accentunder="false" accent="false"><mrow  
+><mo 
+class="MathClass-op"> ∑</mo>
+</mrow><mrow 
+><mi 
+>j</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>N</mi></mrow></munderover 
+><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+     </li>
+     <li class="itemize">Minimizing <!--l. 6--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>W</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>C</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+     is equivalent to maximizing <!--l. 6--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>B</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>C</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></math></li></ul>
+<!--l. 1--><p class="noindent" >
+</p>
+<h3 class="sectionHead"><span class="titlemark">1.2   </span> <a 
+ id="x1-50001.2"></a>k-Means</h3>
+<!--l. 2--><p class="noindent" >Finding <!--l. 2--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msup><mrow 
+><mi 
+>C</mi></mrow><mrow 
+><mo 
+class="MathClass-bin">∗</mo></mrow></msup 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>i</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+by enumeration is too time-consuming. Instead use iterative greedy descent which
+leads to a local optima. The loss function is deﬁned as </p><table class="equation"><tr><td> <a 
+ id="x1-5001r1"></a>
+<!--l. 4--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+                   <mi 
+>J</mi> <mo 
+class="MathClass-rel">=</mo><munderover accentunder="false" accent="false"><mrow  
+><mo mathsize="big" 
+> ∑</mo>
+  </mrow><mrow 
+><mi 
+>k</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>K</mi></mrow></munderover 
+><munder class="msub"><mrow 
+><mo mathsize="big" 
+> ∑</mo>
+   </mrow><mrow 
+><mi 
+>C</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>i</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mo 
+class="MathClass-rel">=</mo><mi 
+>k</mi></mrow></munder 
+><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>μ</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow>
+</math></td><td class="eq-no">(1.1)</td></tr></table>
+<!--l. 8--><p class="noindent" >Using the squared Euclidean distance, <!--l. 8--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>μ</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <mo 
+class="MathClass-rel">|</mo><mo 
+class="MathClass-rel">|</mo><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+> <mo 
+class="MathClass-bin">−</mo> <msub><mrow 
+><mi 
+>μ</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+><mo 
+class="MathClass-rel">|</mo><msup><mrow 
+><mo 
+class="MathClass-rel">|</mo></mrow><mrow 
+><mn>2</mn></mrow></msup 
+></math>,
+will eﬀectively assign each sample to the closet center.
+</p><!--l. 10--><p class="noindent" >A slightly diﬀerent deﬁnition is to minimize our already deﬁned
+<!--l. 10--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>W</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>C</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></math> </p><table class="equation"><tr><td>
+<a 
+ id="x1-5002r2"></a>
+                                                                  
+
+                                                                  
+<!--l. 11--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+<mi 
+>W</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>C</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <mfrac><mrow 
+><mn>1</mn></mrow> 
+<mrow 
+><mn>2</mn></mrow></mfrac><munderover accentunder="false" accent="false"><mrow  
+><mo mathsize="big" 
+>∑</mo>
+  </mrow><mrow 
+><mi 
+>k</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>K</mi></mrow></munderover 
+><munder class="msub"><mrow 
+><mo mathsize="big" 
+> ∑</mo>
+   </mrow><mrow 
+><mi 
+>C</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>i</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mo 
+class="MathClass-rel">=</mo><mi 
+>k</mi></mrow></munder 
+><munder class="msub"><mrow 
+><mo mathsize="big" 
+> ∑</mo>
+   </mrow><mrow 
+><mi 
+>C</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>j</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mo 
+class="MathClass-rel">=</mo><mi 
+>k</mi></mrow></munder 
+><mo 
+class="MathClass-rel">|</mo><mo 
+class="MathClass-rel">|</mo><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mo 
+class="MathClass-bin">−</mo><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+><mo 
+class="MathClass-rel">|</mo><msup><mrow 
+><mo 
+class="MathClass-rel">|</mo></mrow><mrow 
+><mn>2</mn></mrow></msup 
+> <mo 
+class="MathClass-rel">=</mo><munderover accentunder="false" accent="false"><mrow  
+><mo mathsize="big" 
+> ∑</mo>
+  </mrow><mrow 
+><mi 
+>k</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>K</mi></mrow></munderover 
+><msub><mrow 
+><mi 
+>N</mi></mrow><mrow 
+>
+<mi 
+>k</mi></mrow></msub 
+><munder class="msub"><mrow 
+><mo mathsize="big" 
+> ∑</mo>
+   </mrow><mrow 
+><mi 
+>C</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>i</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mo 
+class="MathClass-rel">=</mo><mi 
+>k</mi></mrow></munder 
+><mo 
+class="MathClass-rel">|</mo><mo 
+class="MathClass-rel">|</mo><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mo 
+class="MathClass-bin">−</mo><msub><mrow 
+><mi 
+>μ</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+><mo 
+class="MathClass-rel">|</mo><msup><mrow 
+><mo 
+class="MathClass-rel">|</mo></mrow><mrow 
+><mn>2</mn></mrow></msup 
+>
+</math></td><td class="eq-no">(1.2)</td></tr></table>
+<!--l. 15--><p class="noindent" >Also called <span 
+class="ecti-1000">Lloyd&#x2019;s Algorithm  </span>we optimize for
+<!--l. 15--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>J</mi></math> in a
+greedy fashion.
+     </p><ol  class="enumerate1" >
+     <li 
+  class="enumerate" id="x1-5004x1"><span 
+class="ecbx-1000">Classify</span>: Assign each observation <!--l. 17--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>i</mi></math>
+     to the nearest centroid:
+     <!--tex4ht:inline--><!--l. 17--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" >
+                               <mi 
+>C</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>i</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo><munder class="msub"><mrow 
+><mo class="qopname"> argmin</mo></mrow><mrow 
+><mn>1</mn><mo 
+class="MathClass-rel">≤</mo><mi 
+>k</mi><mo 
+class="MathClass-rel">≤</mo><mi 
+>K</mi></mrow></munder 
+><mo 
+class="MathClass-rel">|</mo><mo 
+class="MathClass-rel">|</mo><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+> <mo 
+class="MathClass-bin">−</mo> <msub><mrow 
+><mi 
+>μ</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+><mo 
+class="MathClass-rel">|</mo><msup><mrow 
+><mo 
+class="MathClass-rel">|</mo></mrow><mrow 
+><mn>2</mn></mrow></msup 
+>
+</math>
+     <!--l. 17--><p class="nopar" >
+     </p></li>
+     <li 
+  class="enumerate" id="x1-5006x2"><span 
+class="ecbx-1000">Recenter</span>: For each class <!--l. 18--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>k</mi></math>,
+     compute a new centroid as the mean of the updated class assignments:
+     <!--tex4ht:inline--><!--l. 18--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" >
+                                        <msub><mrow 
+><mi 
+>μ</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+> <mo 
+class="MathClass-rel">=</mo> <mfrac><mrow 
+><munder class="msub"><mrow 
+><mo mathsize="big" 
+>∑</mo>
+  </mrow><mrow 
+><mi 
+>C</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>i</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mo 
+class="MathClass-rel">=</mo><mi 
+>k</mi></mrow></munder 
+><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></mrow> 
+     <mrow 
+><msub><mrow 
+><mi 
+>N</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+></mrow></mfrac>
+</math>
+     <!--l. 18--><p class="nopar" >
+     </p></li>
+     <li 
+  class="enumerate" id="x1-5008x3"><span 
+class="ecbx-1000">Repeat step 1 and 2 until stopping criteria fulﬁlled (e. g. centers</span>
+     <span 
+class="ecbx-1000">stop moving/ C(i) unchanged).</span></li></ol>
+                                                                  
+
+                                                                  
+<!--l. 22--><p class="noindent" >During the course of the k-means algorithm, the loss function monotonically
+decreases (in both steps) into a local minimum.
+</p><!--l. 24--><p class="noindent" >
+</p>
+<h3 class="sectionHead"><span class="titlemark">1.3   </span> <a 
+ id="x1-60001.3"></a>Fuzzy k-Means</h3>
+<!--l. 25--><p class="noindent" >Observation does not belong strictly to one cluster, but has a member ship degree
+<!--l. 25--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>u</mi></mrow><mrow 
+><mi 
+>i</mi><mi 
+>k</mi></mrow></msub 
+></math> for each
+cluster <!--l. 25--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>k</mi></math>.
+</p><!--l. 27--><p class="noindent" >TODO: Do we need <!--l. 27--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msubsup><mrow 
+><mo 
+class="MathClass-op"> ∑</mo>
+  <!--nolimits--></mrow><mrow 
+><mi 
+>k</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>K</mi></mrow></msubsup 
+><msub><mrow 
+><mi 
+>u</mi></mrow><mrow 
+><mi 
+>i</mi><mi 
+>k</mi></mrow></msub 
+> <mo 
+class="MathClass-rel">=</mo> <mn>1</mn></math>
+?
+</p><!--l. 29--><p class="noindent" >Our new loss function is: </p><table class="equation"><tr><td> <a 
+ id="x1-6001r3"></a>
+<!--l. 30--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+                  <msub><mrow 
+><mi 
+>J</mi></mrow><mrow 
+><mi 
+>m</mi></mrow></msub 
+> <mo 
+class="MathClass-rel">=</mo><munderover accentunder="false" accent="false"><mrow  
+><mo mathsize="big" 
+> ∑</mo>
+  </mrow><mrow 
+><mi 
+>i</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>N</mi></mrow></munderover 
+><munderover accentunder="false" accent="false"><mrow  
+><mo mathsize="big" 
+> ∑</mo>
+  </mrow><mrow 
+><mi 
+>k</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>K</mi></mrow></munderover 
+><msub><mrow 
+><mi 
+>u</mi></mrow><mrow 
+>
+<mi 
+>i</mi><mi 
+>k</mi></mrow></msub 
+><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>μ</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow>
+</math></td><td class="eq-no">(1.3)</td></tr></table>
+<!--l. 34--><p class="noindent" >
+     </p><ol  class="enumerate1" >
+     <li 
+  class="enumerate" id="x1-6003x1"><span 
+class="ecbx-1000">Compute degree of membership:</span>
+     <!--tex4ht:inline--><!--l. 36--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" >
+                          <msub><mrow 
+><mi 
+>u</mi></mrow><mrow 
+><mi 
+>i</mi><mi 
+>k</mi></mrow></msub 
+> <mo 
+class="MathClass-rel">=</mo><msup><mrow 
+> <mfenced separators="" 
+open="["  close="]" ><mrow><munderover accentunder="false" accent="false"><mrow  
+><mo mathsize="big" 
+>∑</mo>
+  </mrow><mrow 
+><mi 
+>j</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>K</mi></mrow></munderover 
+><msup><mrow 
+> <mfenced separators="" 
+open="("  close=")" ><mrow> <mfrac><mrow 
+><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>μ</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow>
+<mrow 
+><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><msub><mrow 
+><mi 
+>μ</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>μ</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow></mfrac></mrow></mfenced></mrow><mrow 
+>  <mfrac><mrow 
+><mn>2</mn></mrow> 
+<mrow 
+><mi 
+>m</mi><mo 
+class="MathClass-bin">−</mo><mn>1</mn></mrow></mfrac> </mrow></msup 
+> </mrow></mfenced> </mrow><mrow 
+><mo 
+class="MathClass-bin">−</mo><mn>1</mn></mrow></msup 
+>
+</math>
+     <!--l. 36--><p class="nopar" >
+                                                                  
+
+                                                                  
+     </p></li>
+     <li 
+  class="enumerate" id="x1-6005x2"><span 
+class="ecbx-1000">Recenter:</span>
+     <!--tex4ht:inline--><!--l. 38--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" >
+                                 <msub><mrow 
+><mi 
+>μ</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+> <mo 
+class="MathClass-rel">=</mo> <mfrac><mrow 
+><munderover accentunder="false" accent="false"><mrow  
+><mo mathsize="big" 
+>∑</mo>
+  </mrow><mrow 
+><mi 
+>i</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>N</mi></mrow></munderover 
+><msubsup><mrow 
+><mi 
+>u</mi></mrow><mrow 
+><mi 
+>i</mi><mi 
+>k</mi></mrow><mrow 
+><mi 
+>m</mi></mrow></msubsup 
+><mspace width="0.3em" class="thinspace"/><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></mrow> 
+ <mrow 
+><munderover accentunder="false" accent="false"><mrow  
+><mo mathsize="big" 
+> ∑</mo>
+  </mrow><mrow 
+><mi 
+>i</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>N</mi></mrow></munderover 
+><msubsup><mrow 
+><mi 
+>u</mi></mrow><mrow 
+><mi 
+>i</mi><mi 
+>k</mi></mrow><mrow 
+><mi 
+>m</mi></mrow></msubsup 
+></mrow></mfrac>
+</math>
+     <!--l. 38--><p class="nopar" >
+     </p></li>
+     <li 
+  class="enumerate" id="x1-6007x3"><span 
+class="ecbx-1000">Repeat step 1 and 2 until stopping criteria fulﬁlled.</span></li></ol>
+<!--l. 42--><p class="noindent" >
+</p>
+<h3 class="sectionHead"><span class="titlemark">1.4   </span> <a 
+ id="x1-70001.4"></a>LBG-Algorithm</h3>
+                                                                  
+
+                                                                  
+<h2 class="chapterHead"><span class="titlemark">Chapter 2</span><br /><a 
+ id="x1-80002"></a>Supervised Vector Quantization</h2>
+<h3 class="sectionHead"><span class="titlemark">2.1   </span> <a 
+ id="x1-90002.1"></a>Distortion Measures</h3>
+<!--l. 2--><p class="noindent" >TODO
+</p><!--l. 5--><p class="noindent" >Most common is the squared-error distortion: </p><table class="equation"><tr><td> <a 
+ id="x1-9001r1"></a>
+<!--l. 6--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+                    <mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo 
+class="MathClass-op">̂</mo></mover></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo><munderover accentunder="false" accent="false"><mrow  
+><mo mathsize="big" 
+> ∑</mo>
+  </mrow><mrow 
+><mi 
+>i</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>N</mi></mrow></munderover 
+><mo 
+class="MathClass-rel">|</mo><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+>
+<mi 
+>i</mi></mrow></msub 
+> <mo 
+class="MathClass-bin">−</mo><msub><mrow 
+><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo>̂</mo></mover></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><msup><mrow 
+><mo 
+class="MathClass-rel">|</mo></mrow><mrow 
+><mn>2</mn></mrow></msup 
+>
+</math></td><td class="eq-no">(2.1)</td></tr></table>
+<!--l. 10--><p class="noindent" >Other common distortion measures are the
+<!--l. 10--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>l</mi></mrow><mrow 
+><mi 
+>ν</mi></mrow></msub 
+></math>, or
+Holder norm, </p><table class="equation"><tr><td> <a 
+ id="x1-9002r2"></a>
+<!--l. 11--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+             <mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo 
+class="MathClass-op">̂</mo></mover></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo><msup><mrow 
+> <mfenced separators="" 
+open="("  close=")" ><mrow><munderover accentunder="false" accent="false"><mrow  
+><mo mathsize="big" 
+>∑</mo>
+  </mrow><mrow 
+><mi 
+>i</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>N</mi></mrow></munderover 
+><mo 
+class="MathClass-rel">|</mo><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+>
+<mi 
+>i</mi></mrow></msub 
+> <mo 
+class="MathClass-bin">−</mo><msub><mrow 
+><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo>̂</mo></mover></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><msup><mrow 
+><mo 
+class="MathClass-rel">|</mo></mrow><mrow 
+><mi 
+>ν</mi></mrow></msup 
+></mrow></mfenced> </mrow><mrow 
+><mfrac><mrow 
+><mn>1</mn></mrow> 
+<mrow 
+><mi 
+>ν</mi></mrow></mfrac> </mrow></msup 
+> <mo 
+class="MathClass-rel">=</mo> <mo 
+class="MathClass-rel">|</mo><mo 
+class="MathClass-rel">|</mo><mi 
+>x</mi> <mo 
+class="MathClass-bin">−</mo><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo 
+class="MathClass-op">̂</mo></mover><mo 
+class="MathClass-rel">|</mo><msub><mrow 
+><mo 
+class="MathClass-rel">|</mo></mrow><mrow 
+><mi 
+>ν</mi></mrow></msub 
+>
+</math></td><td class="eq-no">(2.2)</td></tr></table>
+<!--l. 15--><p class="noindent" >and its <!--l. 15--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msup><mrow 
+><mi 
+>ν</mi></mrow><mrow 
+><mi 
+>t</mi><mi 
+>h</mi></mrow></msup 
+></math> power,
+the <!--l. 15--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msup><mrow 
+><mi 
+>ν</mi></mrow><mrow 
+><mi 
+>t</mi><mi 
+>h</mi></mrow></msup 
+></math>-law
+distortion: </p><table class="equation"><tr><td> <a 
+ id="x1-9003r3"></a>
+<!--l. 16--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+                    <mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo 
+class="MathClass-op">̂</mo></mover></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo><munderover accentunder="false" accent="false"><mrow  
+><mo mathsize="big" 
+> ∑</mo>
+  </mrow><mrow 
+><mi 
+>i</mi><mo 
+class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow 
+><mi 
+>N</mi></mrow></munderover 
+><mo 
+class="MathClass-rel">|</mo><msub><mrow 
+><mi 
+>x</mi></mrow><mrow 
+>
+<mi 
+>i</mi></mrow></msub 
+> <mo 
+class="MathClass-bin">−</mo><msub><mrow 
+><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo>̂</mo></mover></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><msup><mrow 
+><mo 
+class="MathClass-rel">|</mo></mrow><mrow 
+><mi 
+>ν</mi></mrow></msup 
+>
+</math></td><td class="eq-no">(2.3)</td></tr></table>
+                                                                  
+
+                                                                  
+<!--l. 20--><p class="noindent" >The holder Norm (<a 
+href="#x1-9002r2">2.2<!--tex4ht:ref: eq:holder-norm --></a>) is a distance and fulﬁlls the triangle
+inequality<span class="footnote-mark"><a 
+href="NeuralNets3.html#fn1x3"><sup class="textsuperscript">1</sup></a></span><a 
+ id="x1-9004f1"></a> ,
+the <!--l. 20--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msup><mrow 
+><mi 
+>ν</mi></mrow><mrow 
+><mi 
+>t</mi><mi 
+>h</mi></mrow></msup 
+></math>-law
+distortion not.
+</p><!--l. 22--><p class="noindent" >All three and many others, as the weighted-squares distortion
+and the quadratic distortion, depend on the diﬀerence
+<!--l. 22--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>x</mi> <mo 
+class="MathClass-bin">−</mo><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo 
+class="MathClass-op">̂</mo></mover></math>. We call them can
+be described as <!--l. 22--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo 
+class="MathClass-op">̂</mo></mover></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <mi 
+>L</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi> <mo 
+class="MathClass-bin">−</mo><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo 
+class="MathClass-op">̂</mo></mover></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>.
+A distortion not having this form is the one by Itakura, Saito and Chaﬀee,
+</p>
+<table class="equation"><tr><td> <a 
+ id="x1-9005r4"></a>
+<!--l. 24--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+                  <mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo 
+class="MathClass-op">̂</mo></mover></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi> <mo 
+class="MathClass-bin">−</mo><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo 
+class="MathClass-op">̂</mo></mover></mrow><mo 
+class="MathClass-close">)</mo></mrow><mspace width="0.3em" class="thinspace"/><mi 
+>R</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mspace width="0.3em" class="thinspace"/><msup><mrow 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi> <mo 
+class="MathClass-bin">−</mo><mover 
+accent="true"><mrow 
+><mi 
+>x</mi></mrow><mo 
+class="MathClass-op">̂</mo></mover></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow><mrow 
+><mi 
+>T</mi></mrow></msup 
+>
+</math></td><td class="eq-no">(2.4)</td></tr></table>
+<!--l. 28--><p class="noindent" >, where <!--l. 28--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>R</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+is the autocorrelation matrix, see <span class="cite">[<span 
+class="ecbx-1000">?</span>]</span> for details.
+</p>
+<h3 class="sectionHead"><span class="titlemark">2.2   </span> <a 
+ id="x1-100002.2"></a>Learning Vector Quantization</h3>
+<!--l. 2--><p class="noindent" >Literature: <span class="cite">[<span 
+class="ecbx-1000">?</span>, <span 
+class="ecbx-1000">?</span>]</span>
+</p><!--l. 4--><p class="noindent" >Learning vector quantization (LVQ) are used for statistical classiﬁcation. Supervised
+learning is used to train multiple codebook vector per class. The class of
+new observations is then determined by the class of the closest codebook
+vector.
+</p><!--l. 6--><p class="noindent" >Kohonen published several versions of LVQ that only diﬀer slightly an the conditions
+and formulae for updates during the training.
+</p><!--l. 8--><p class="noindent" >Notation: </p>
+     <ul class="itemize1">
+     <li class="itemize">discrete time domain with <!--l. 10--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>t</mi> <mo 
+class="MathClass-rel">=</mo> <mn>0</mn><mo 
+class="MathClass-punc">,</mo><mn>1</mn><mo 
+class="MathClass-punc">,</mo><mn>2</mn><mo 
+class="MathClass-punc">,</mo><mo 
+class="MathClass-rel">⋯</mo><mspace width="0.3em" class="thinspace"/></math>
+                                                                  
+
+                                                                  
+     </li>
+     <li class="itemize"><!--l. 11--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>x</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+     is an input sample
+     </li>
+     <li class="itemize"><!--l. 12--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></math>
+     our vector vectors and <!--l. 12--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+     their sequential values
+     </li>
+     <li class="itemize">classes <!--l. 13--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>S</mi></mrow><mrow 
+><mn>1</mn></mrow></msub 
+><mo 
+class="MathClass-punc">,</mo><mo 
+class="MathClass-rel">⋯</mo><mspace width="0.3em" class="thinspace"/><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>S</mi></mrow><mrow 
+><mi 
+>K</mi></mrow></msub 
+></math>
+     </li>
+     <li class="itemize">each codebook vectors belongs to exactly one class, but each class has
+     multiple codebook vectors
+     </li>
+     <li class="itemize"><!--l. 15--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><mi 
+>y</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+     is a distance measure (usually Euclidean distance is used)
+     </li>
+     <li class="itemize"><!--l. 16--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>c</mi> <mo 
+class="MathClass-rel">=</mo><munder class="msub"><mrow 
+><mo class="qopname"> argmin</mo></mrow><mrow 
+><mi 
+>i</mi></mrow></munder 
+><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+     is the index of the closest codebook vector
+     </li>
+     <li class="itemize"><!--l. 17--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>δ</mi></mrow><mrow 
+><mi 
+>i</mi><mi 
+>j</mi></mrow></msub 
+></math>
+     is the Kronecker delta (<!--l. 17--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>δ</mi></mrow><mrow 
+><mi 
+>i</mi><mi 
+>j</mi></mrow></msub 
+> <mo 
+class="MathClass-rel">=</mo> <mn>1</mn></math>
+     for <!--l. 17--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>i</mi> <mo 
+class="MathClass-rel">=</mo> <mi 
+>j</mi></math>,
+     <!--l. 17--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>δ</mi></mrow><mrow 
+><mi 
+>i</mi><mi 
+>j</mi></mrow></msub 
+> <mo 
+class="MathClass-rel">=</mo> <mn>0</mn></math>
+     for <!--l. 17--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>i</mi><mo 
+class="MathClass-rel">≠</mo><mi 
+>j</mi></math>)
+     </li>
+     <li class="itemize"><!--l. 18--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>η</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+     learning rate ate time <!--l. 18--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>t</mi></math>
+     </li>
+     <li class="itemize"><!--l. 19--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>w</mi></math>
+     window width (see LVQ2)</li></ul>
+<!--l. 22--><p class="noindent" >For convenience we also deﬁne <!--l. 22--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>s</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+as </p><table class="equation"><tr><td> <a 
+ id="x1-10001r5"></a>
+<!--l. 23--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+<mi 
+>s</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <mrow class="cases" > <mfenced separators="" 
+open="{"  close="" ><mrow> <mtable  align="axis" style=""  
+equalrows="false" columnlines="none" equalcolumns="false" class="array"><mtr><mtd 
+class="array"  columnalign="left"><mo 
+class="MathClass-bin">+</mo><mn>1</mn><mspace width="1em" class="quad"/></mtd><mtd 
+class="array"  columnalign="left"><mstyle 
+class="text"><mtext  >if </mtext><mstyle 
+class="math"><mi 
+>x</mi></mstyle><mtext  > and </mtext><mstyle 
+class="math"><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+></mstyle><mtext  > belong to the same class</mtext></mstyle>  </mtd>
+</mtr><mtr><mtd 
+class="array"  columnalign="left"><mo 
+class="MathClass-bin">−</mo><mn>1</mn> <mspace width="1em" class="quad"/></mtd><mtd 
+class="array"  columnalign="left"><mstyle 
+class="text"><mtext  >if </mtext><mstyle 
+class="math"><mi 
+>x</mi></mstyle><mtext  > and </mtext><mstyle 
+class="math"><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+></mstyle><mtext  > belong to diﬀerent classes</mtext></mstyle></mtd></mtr>
+<!--@{}l@{\quad }l@{}--></mtable>                                                                                                        </mrow></mfenced> </mrow>
+</math></td><td class="eq-no">(2.5)</td></tr></table>
+                                                                  
+
+                                                                  
+<!--l. 30--><p class="noindent" >
+</p>
+<h4 class="subsectionHead"><span class="titlemark">2.2.1   </span> <a 
+ id="x1-110002.2.1"></a>LVQ1</h4>
+<!--l. 31--><p class="noindent" >Update closest codebook vector <!--l. 31--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+></math>
+depending on whether it has the same class as
+<!--l. 31--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>x</mi></math> or
+not.
+</p><!--tex4ht:inline--><!--l. 39--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" ><mtable 
+columnalign="left" class="align">
+<mtr><mtd columnspan="15" class="intertext"><mstyle 
+class="intertext"><mtext  >If </mtext><mstyle 
+class="math"><mi 
+>x</mi></mstyle><mtext  > and </mtext><mstyle 
+class="math"><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></mstyle><mtext  > belong to the same class set</mtext></mstyle></mtd></mtr>
+                  <mtr><mtd 
+columnalign="right" class="align-odd"><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi> <mo 
+class="MathClass-bin">+</mo> <mn>1</mn></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-bin">+</mo> <mi 
+>η</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi> <mo 
+class="MathClass-bin">−</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow><mo 
+class="MathClass-close">)</mo></mrow></mtd>                  <mtd 
+class="align-even"><mspace width="2em"/></mtd>                  <mtd 
+columnalign="right" class="align-label"><mstyle 
+   id="x1-11001r6"  class="label" ></mstyle><!--endlabel--><mstyle 
+class="maketag"><mtext  >(2.6)</mtext></mstyle>
+</mtd></mtr><mtr><mtd columnspan="3" class="intertext"><mstyle 
+class="intertext"><mtext  >If </mtext><mstyle 
+class="math"><mi 
+>x</mi></mstyle><mtext  > and </mtext><mstyle 
+class="math"><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></mstyle><mtext  > belong to diﬀerent classes</mtext></mstyle></mtd></mtr><mtr><mtd>
+                  </mtd></mtr><mtr><mtd 
+columnalign="right" class="align-odd"><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi> <mo 
+class="MathClass-bin">+</mo> <mn>1</mn></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-bin">−</mo> <mi 
+>η</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi> <mo 
+class="MathClass-bin">−</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow><mo 
+class="MathClass-close">)</mo></mrow></mtd>                  <mtd 
+class="align-even"><mspace width="2em"/></mtd>                  <mtd 
+columnalign="right" class="align-label"><mstyle 
+   id="x1-11002r7"  class="label" ></mstyle><!--endlabel--><mstyle 
+class="maketag"><mtext  >(2.7)</mtext></mstyle>
+</mtd></mtr><mtr><mtd columnspan="3" class="intertext"><mstyle 
+class="intertext"><mtext  >Leave the other codebook vectors unchanged</mtext></mstyle></mtd></mtr><mtr><mtd>
+                  </mtd></mtr><mtr><mtd 
+columnalign="right" class="align-odd"><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi> <mo 
+class="MathClass-bin">+</mo> <mn>1</mn></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mstyle 
+class="text"><mtext  > for </mtext></mstyle><mi 
+>i</mi><mo 
+class="MathClass-rel">≠</mo><mi 
+>c</mi></mtd>                           <mtd 
+class="align-even"><mspace width="2em"/></mtd>                  <mtd 
+columnalign="right" class="align-label"><mstyle 
+   id="x1-11003r8"  class="label" ></mstyle><!--endlabel--><mstyle 
+class="maketag"><mtext  >(2.8)</mtext></mstyle>
+</mtd></mtr></mtable></math>
+<!--l. 41--><p class="noindent" >Or in a compressed form: </p><table class="equation"><tr><td> <a 
+ id="x1-11004r9"></a>
+                                                                  
+
+                                                                  
+<!--l. 42--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+              <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi> <mo 
+class="MathClass-bin">+</mo> <mn>1</mn></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-bin">+</mo> <mi 
+>η</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mi 
+>s</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><msub><mrow 
+><mi 
+>δ</mi></mrow><mrow 
+><mi 
+>c</mi><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-bin">−</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow><mo 
+class="MathClass-close">)</mo></mrow>
+</math></td><td class="eq-no">(2.9)</td></tr></table>
+<!--l. 46--><p class="noindent" >
+</p>
+<h4 class="subsectionHead"><span class="titlemark">2.2.2   </span> <a 
+ id="x1-120002.2.2"></a>OLVQ</h4>
+<!--l. 47--><p class="noindent" >Determine the optimal learning rate <!--l. 47--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>η</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></math>
+for each codebook vector <!--l. 47--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></math>
+for fastest convergence.
+</p>
+<table class="equation"><tr><td> <a 
+ id="x1-12001r10"></a>
+<!--l. 49--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+                       <msub><mrow 
+><mi 
+>η</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo>      <mfrac><mrow 
+><msub><mrow 
+><mi 
+>η</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi> <mo 
+class="MathClass-bin">−</mo> <mn>1</mn></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow> 
+<mrow 
+><mn>1</mn> <mo 
+class="MathClass-bin">+</mo> <mi 
+>s</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><msub><mrow 
+><mi 
+>η</mi></mrow><mrow 
+><mi 
+>c</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi> <mo 
+class="MathClass-bin">−</mo> <mn>1</mn></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow></mfrac>
+</math></td><td class="eq-no">(2.10)</td></tr></table>
+<!--l. 53--><p class="noindent" >Modify update rule from LVQ1. </p><table class="equation"><tr><td> <a 
+ id="x1-12002r11"></a>
+<!--l. 54--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+           <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi> <mo 
+class="MathClass-bin">+</mo> <mn>1</mn></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <mrow ><mo 
+class="MathClass-open">[</mo><mrow><mn>1</mn> <mo 
+class="MathClass-bin">−</mo> <msub><mrow 
+><mi 
+>η</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mi 
+>s</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><msub><mrow 
+><mi 
+>δ</mi></mrow><mrow 
+><mi 
+>c</mi><mi 
+>i</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">]</mo></mrow><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-bin">+</mo> <msub><mrow 
+><mi 
+>η</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mi 
+>s</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><msub><mrow 
+><mi 
+>δ</mi></mrow><mrow 
+><mi 
+>c</mi><mi 
+>i</mi></mrow></msub 
+><mi 
+>x</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow>
+</math></td><td class="eq-no">(2.11)</td></tr></table>
+<!--l. 58--><p class="noindent" >This modiﬁcation will not work for LVQ2, but could be applied to LVQ3.
+                                                                  
+
+                                                                  
+</p><!--l. 60--><p class="noindent" >
+</p>
+<h4 class="subsectionHead"><span class="titlemark">2.2.3   </span> <a 
+ id="x1-130002.2.3"></a>LVQ2.1</h4>
+<!--l. 61--><p class="noindent" ><!--l. 61--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></math> and
+<!--l. 61--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+></math> are the two closest
+codebook vectors to <!--l. 61--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>x</mi></math>.
+One of them must belong to the correct class
+<!--l. 61--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>x</mi></math> and the other to a
+diﬀerent class. Moreover, <!--l. 61--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>x</mi></math>
+must be inside a ‘window&#x2019;. The window is deﬁned around the mid-plane of
+<!--l. 61--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></math> and
+<!--l. 61--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+></math> and depends on
+the window width <!--l. 61--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>w</mi></math>.
+</p>
+<table class="equation"><tr><td> <a 
+ id="x1-13001r12"></a>
+<!--l. 63--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+                   <mo class="qopname">min</mo><mrow ><mo 
+class="MathClass-open">{</mo><mrow><mfrac><mrow 
+><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow>
+<mrow 
+><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow></mfrac><mo 
+class="MathClass-punc">,</mo> <mfrac><mrow 
+><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow> 
+<mrow 
+><mi 
+>d</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow></mfrac></mrow><mo 
+class="MathClass-close">}</mo></mrow> <mo 
+class="MathClass-rel">&#x003E;</mo> <mfrac><mrow 
+><mn>1</mn> <mo 
+class="MathClass-bin">−</mo> <mi 
+>w</mi></mrow> 
+<mrow 
+><mn>1</mn> <mo 
+class="MathClass-bin">+</mo> <mi 
+>w</mi></mrow></mfrac>
+</math></td><td class="eq-no">(2.12)</td></tr></table>
+<!--l. 67--><p class="noindent" >Good values for <!--l. 67--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>w</mi></math>
+are in <!--l. 67--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mrow ><mo 
+class="MathClass-open">[</mo><mrow><mn>0</mn><mo 
+class="MathClass-punc">.</mo><mn>2</mn><mo 
+class="MathClass-punc">,</mo><mn>0</mn><mo 
+class="MathClass-punc">.</mo><mn>3</mn></mrow><mo 
+class="MathClass-close">]</mo></mrow></math>.
+</p><!--l. 69--><p class="noindent" >Assume that <!--l. 69--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+></math> belongs
+to the same class as <!--l. 69--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>x</mi></math>
+(<!--l. 69--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" > <mo 
+class="MathClass-rel">⇒</mo> <mi 
+>x</mi></math> and
+<!--l. 69--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></math> belong to diﬀerent
+class), then <!--l. 69--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></math>
+and <!--l. 69--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+></math>
+are updated simultaneously and similar to LVQ1.
+</p><!--l. 71--><p class="noindent" >
+                                                                  
+
+                                                                  
+</p><!--tex4ht:inline--><!--l. 76--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" ><mtable 
+columnalign="left" class="align">
+                 <mtr><mtd 
+columnalign="right" class="align-odd"><mtable  
+columnalign="right left" class="split">
+<mtr class="split-mtr"><mtd 
+class="split-mtd"> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi> <mo 
+class="MathClass-bin">+</mo> <mn>1</mn></mrow><mo 
+class="MathClass-close">)</mo></mrow></mtd><mtd 
+class="split-mtd"> <mo 
+class="MathClass-rel">=</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-bin">−</mo> <mi 
+>η</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mrow ><mo 
+class="MathClass-open">[</mo><mrow><mi 
+>x</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-bin">−</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow><mo 
+class="MathClass-close">]</mo></mrow></mtd>
+</mtr><mtr class="split-mtr"><mtd 
+class="split-mtd"> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi> <mo 
+class="MathClass-bin">+</mo> <mn>1</mn></mrow><mo 
+class="MathClass-close">)</mo></mrow></mtd><mtd 
+class="split-mtd"> <mo 
+class="MathClass-rel">=</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-bin">+</mo> <mi 
+>η</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mrow ><mo 
+class="MathClass-open">[</mo><mrow><mi 
+>x</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-bin">−</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow><mo 
+class="MathClass-close">]</mo></mrow></mtd>
+</mtr></mtable>                                                                                                       </mtd>                 <mtd 
+class="align-even"><mspace width="2em"/></mtd>                 <mtd 
+columnalign="right" class="align-label"><mstyle 
+   id="x1-13002r13"  class="label" ></mstyle><!--endlabel--><mstyle 
+class="maketag"><mtext  >(2.13)</mtext></mstyle>
+</mtd></mtr></mtable></math>
+<!--l. 78--><p class="noindent" >In the original LVQ2 <!--l. 78--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></math>
+had to be the closest codebook vector and belong to a diﬀerent class.
+</p><!--l. 80--><p class="noindent" >
+</p>
+<h4 class="subsectionHead"><span class="titlemark">2.2.4   </span> <a 
+ id="x1-140002.2.4"></a>LVQ3</h4>
+<!--l. 81--><p class="noindent" >LVQ3 has the same update rule as LVQ2.1, but in case that
+<!--l. 81--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>x</mi><mo 
+class="MathClass-punc">,</mo><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>i</mi></mrow></msub 
+></math> and
+<!--l. 81--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>j</mi></mrow></msub 
+></math> all
+belong to the same class we will perform the following update: </p><table class="equation"><tr><td> <a 
+ id="x1-14001r14"></a>
+<!--l. 82--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="block" class="equation">
+            <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi> <mo 
+class="MathClass-bin">+</mo> <mn>1</mn></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-rel">=</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-bin">+</mo> <mi 
+>𝜖</mi><mi 
+>η</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow><mrow ><mo 
+class="MathClass-open">[</mo><mrow><mi 
+>x</mi><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow> <mo 
+class="MathClass-bin">−</mo> <msub><mrow 
+><mi 
+>m</mi></mrow><mrow 
+><mi 
+>k</mi></mrow></msub 
+><mrow ><mo 
+class="MathClass-open">(</mo><mrow><mi 
+>t</mi></mrow><mo 
+class="MathClass-close">)</mo></mrow></mrow><mo 
+class="MathClass-close">]</mo></mrow><mspace width="1em" class="quad"/><mi 
+>f</mi><mi 
+>o</mi><mi 
+>r</mi><mi 
+>k</mi> <mo 
+class="MathClass-rel">∈</mo> <mi 
+>i</mi><mo 
+class="MathClass-punc">,</mo><mi 
+>j</mi>
+</math></td><td class="eq-no">(2.14)</td></tr></table>
+<!--l. 86--><p class="noindent" >Applicable values for <!--l. 86--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mi 
+>𝜖</mi></math>
+are between <!--l. 86--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mn>0</mn><mo 
+class="MathClass-punc">.</mo><mn>1</mn></math>
+and <!--l. 86--><math 
+ xmlns="http://www.w3.org/1998/Math/MathML"  
+display="inline" ><mn>0</mn><mo 
+class="MathClass-punc">.</mo><mn>5</mn></math>
+and seem to depend on the window size.
+</p><!--l. 1--><p class="noindent" >
+</p>
+<h3 class="sectionHead"><span class="titlemark">2.3   </span> <a 
+ id="x1-150002.3"></a>Self-Organizing Maps</h3>
+<!--l. 2--><p class="noindent" >Sometimes also called self-organizing feature maps.
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+                                                                  
+
+
