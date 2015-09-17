@@ -17,6 +17,23 @@
 \tikzsetexternalprefix{figures/}
 \tikzexternalize[shell escape=-enable-write18]
 
+% draw neural nets (see bottleneck-features for an example)
+\usepackage{tikz}
+\usetikzlibrary{positioning,decorations}
+\tikzset{%
+  every neuron/.style={
+    circle,
+    draw,
+    minimum size=1cm
+  },
+  neuron missing/.style={
+    draw=none,
+    scale=4,
+    text height=0.333cm,
+    execute at begin node=\color{black}$\vdots$
+  },
+}
+
 \usepackage[nomain,toc,acronym]{glossaries}
 \makeglossaries
 \loadglsentries{Acronyms.tex}
