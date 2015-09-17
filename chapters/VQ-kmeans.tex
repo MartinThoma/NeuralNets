@@ -40,4 +40,26 @@ J_m = \sum_{i=1}^N \sum_{k=1}^K u_{ik} d(x_i, \mu_k)
 \end{enumerate}
 
 \section{LBG-Algorithm}
-% see http://www.data-compression.com/vq.html#lbg
+Original Paper: \cite{Linde1980}\\
+Demo: \href{http://www.data-compression.com/vqanim.shtml}{external website}
+
+The Linde, Buzo, Grey (LBG) Algorithm is an alternative method to design a $K$-vector codebook, where $K=2^x$.\\
+The algorithm takes a parameter a small $\epsilon > 0$ (\eg $\epsilon=0.001$).
+
+\begin{enumerate}
+\item \textbf{Initialize} 1-vector starting codebook:
+	\begin{align}
+	\mu_1(0) &= \frac{1}{N} \sum\limits_{i=1}^N x_i\\
+	t &= 0
+	\end{align}
+\item \textbf{Double codebook}:
+	\begin{align}
+	\mu_j(t+1) &= (1+\epsilon)\, \mu_j(t) \quad \text{for } j=1,\cdots,2^t\\
+	\mu_{2*j+1}(t+1) &= (1-\epsilon)\, \mu_j(t) \quad \text{for } j=1,\cdots,2^t\\
+	t &= t+1
+	\end{align}
+\item \textbf{Run k-Means} Use k-Means to optimize to improve the $\mu_j(t)$.
+\item \textbf{Repeat step 2 and 3} until desired number of codebook vectors is reached (for $t=1,\cdots,\log_2(K)-1$)
+\end{enumerate}
+
+Our final codebook will be $\mu_j(\log_2(K))$.
