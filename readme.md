@@ -7,7 +7,7 @@ Corrections, supplements (or wishes) and links to good sources/ papers are very 
 
 ToDo's
 ------
-- Compare BGD, SGD and SGD with minibatches, 
+- Compare BGD, SGD and SGD with minibatches
 - Overview of Pattern recognition (graphic + examples)
 - Add useful literature 
 	- [ ] books
@@ -27,6 +27,11 @@ ToDo's
 - Overview off network architectures (feed forward networks: perceptron, MLP, DNN; shared parameters: TDNN, CNN, RNN)
 - Conjugate gradient method
 - What is the Schwarz Criterion for k-Means
+- Optimal Brain Damage
+- Hebbian learning rule
+- Practical Techniques for Improving Backpropagation (see slides and Pattern Classification Chapter 6.8)
+- NewBob
+- Quickprop (Pattern Recognition 6.9.3)
 
 Open Questions
 --------------

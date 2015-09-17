@@ -1,0 +1,21 @@
+\section{Boltzmann Machines}\label{sec:bm}
+
+\begin{equation}
+z_j = b_j + \sum_i x_i w_{ij}
+\end{equation}
+
+\begin{equation}
+p(x_j = 1) = \sigma(z_j) = \frac{1}{1 + e^{-z_j}}
+\end{equation}
+
+
+\begin{equation}
+p(x) = \frac{e^{-E(x)}}{\sum_y e^{-E(y)}}
+\end{equation}
+
+\begin{equation}
+E(x) = - \sum_i x_i b_i - \half \sum_{i<j} x_i x_j w_{ij}
+\end{equation}
+
+\subsection{Simulated Annealing}
+Use temperature $T$ in 

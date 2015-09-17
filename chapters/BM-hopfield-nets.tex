@@ -1,0 +1,66 @@
+\section{Hopfield Nets}\label{sec:hopfield-nets}
+Literature: \cite[Chapter 5.5]{Patterson1997}
+
+In the following we will only consider binary Hopfield nets, in which the neurons are limited to states $0$ (or $-/-1$) and $1$ (or $+/+1$) (sometimes also denoted as $+$ and $-$ or $-1$ and $+1$). Hopfield nets are not very efficient, but good to show the principle of neural nets and a good introduction to Boltzmann machines.
+
+Hopfield nets consist of a single layer of neurons, that is fully connected and acts both as input and output layer. Weights are stored an a weight matrix $W$, where the entry $W_{ij}$ correspondents to the connection weight form neuron~$i$ to neuron~$j$. We will not allow self loops ($W_{ii} = 0$) and the connections will be symmetric ($W_{ij}=W_{ji}$). There exists variations without those limitations.
+
+\subsection{Update Procedure}
+\begin{enumerate}
+\item Set state $x$ to our input
+\item Update neuron state using
+	$$x_j = \phi\left(\sum_i W_{ij} x_i \right)$$
+	where $\phi(z)$ is the step function
+	\begin{equation}
+	\phi(z) = \begin{cases}
+		1 & \text{if } z > 0\\
+		0 & \text{if } z \leq 0
+	\end{cases}
+	\end{equation}
+
+	We have several options which neurons should be updated:
+	\begin{itemize}
+	\item In parallel (asynchronous)
+	\item Sequential in fixed order (synchronous)
+	\item Sequential in random order (synchronous, closest match to biological neural nets)
+	\item combination of sequential and parallel
+	\end{itemize}
+\item Repeat step 2 until $x$ stabilizes.
+\item State $x$ is our output
+\end{enumerate}
+
+\subsection{Energy function}
+\begin{equation}
+E = -\half \sum_i \sum_{j\neq i} x_i x_j W_{ij}
+\end{equation}
+This is our objective function that we are going to minimize.
+
+\subsection{Convergence}
+If only one neuron~$j$ is updated at the time, the update will always lead to the same or lower energy.
+\begin{itemize}
+\item $x_j(t+1) = x_j(t) \Rightarrow$ state did not change, energy stays the same
+\item $x_j(t+1) = 1 - x_j(t) \Rightarrow$ state did changed, compute the energy change
+	\begin{align}
+	E_j &= -\half \sum_i x_i x_j W_{ij}\\
+	\Delta E &= E_j(t+1) - E_j(t)\\
+	&= -\half \left[ x_j(t+1) \sum_i x_i W_{ij} - x_j(t) \sum_i x_i W_{ij} \right]\\
+	&= -\half \Delta x_j \sum_i x_i W_{ij}\quad\text{with}\quad	\Delta x_j = x_j(t+1) - x_j(t)\\
+	\intertext{Change from 0 to 1}
+	\Delta x_j &= 1,\,\sum_i x_i W_{ij} > 0 \Rightarrow \Delta E_j \leq 0\\
+	\intertext{Change from 1 to 0}
+	\Delta x_j &= -1,\,\sum_i x_i W_{ij} \leq 0 \Rightarrow \Delta E_j \leq 0
+	\end{align}
+\end{itemize}
+
+\subsection{Training}
+\begin{equation}
+W_{ij} = \sum_{x \in X} (2x_i -1)(2x_j-1)
+\end{equation}
+
+\begin{equation}
+W_{ij} = \frac{1}{|X|} \sum_{x \in X} x_i x_j
+\end{equation}
+
+\subsection{Associative memory}
+
+\subsection{Limitations}
