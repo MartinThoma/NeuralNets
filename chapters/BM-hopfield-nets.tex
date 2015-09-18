@@ -1,15 +1,15 @@
 \section{Hopfield Nets}\label{sec:hopfield-nets}
-Literature: \cite[Chapter 5.5]{Patterson1997}
+Literature: \cite[Chapter 5.5]{Patterson1997}, \cite{Storkey1997}
 
 In the following we will only consider binary Hopfield nets, in which the neurons are limited to states $0$ (or $-/-1$) and $1$ (or $+/+1$) (sometimes also denoted as $+$ and $-$ or $-1$ and $+1$). Hopfield nets are not very efficient, but good to show the principle of neural nets and a good introduction to Boltzmann machines.
 
-Hopfield nets consist of a single layer of neurons, that is fully connected and acts both as input and output layer. Weights are stored an a weight matrix $W$, where the entry $W_{ij}$ correspondents to the connection weight form neuron~$i$ to neuron~$j$. We will not allow self loops ($W_{ii} = 0$) and the connections will be symmetric ($W_{ij}=W_{ji}$). There exists variations without those limitations.
+Hopfield nets consist of a single layer of neurons, that is fully connected and acts both as input and output layer. Weights are stored an a weight matrix $W$, where the entry $w_{ij}$ correspondents to the connection weight form neuron~$i$ to neuron~$j$. We will not allow self loops ($w_{ii} = 0$) and the connections will be symmetric ($w_{ij}=w_{ji}$). There exists variations without those limitations.
 
 \subsection{Update Procedure}
 \begin{enumerate}
 \item Set state $x$ to our input
 \item Update neuron state using
-	$$x_j = \phi\left(\sum_i W_{ij} x_i \right)$$
+	$$x_j = \phi\left(\sum_i w_{ij} x_i \right)$$
 	where $\phi(z)$ is the step function
 	\begin{equation}
 	\phi(z) = \begin{cases}
@@ -18,22 +18,26 @@ Hopfield nets consist of a single layer of neurons, that is fully connected and 
 	\end{cases}
 	\end{equation}
 
-	We have several options which neurons should be updated:
+	The updates can be performed in different ways:
 	\begin{itemize}
-	\item In parallel (asynchronous)
-	\item Sequential in fixed order (synchronous)
-	\item Sequential in random order (synchronous, closest match to biological neural nets)
-	\item combination of sequential and parallel
+	\item synchronous: all neurons get the same input (parallel, we cannot guarantee that the energy function $E$, see next section, decreases)
+	\item asynchronous (sequential): one neuron at the time (next neuron gets updated state), order can be fixed or random (random order is closest to biological neural nets)
+	\item combination are possible (group of neurons in parallel, similar to mini-batch training)
 	\end{itemize}
 \item Repeat step 2 until $x$ stabilizes.
 \item State $x$ is our output
 \end{enumerate}
 
+$x$ is now a state that minimizes the energy function $E$ (see next section). If $x$ is a \emph{retrieval state} is matches exactly one of our training patterns, otherwise it is a \emph{spurious state} and can not be recognized.\\
+If we want to remember more that the state vector (\eg class of the pattern) we have to store these ourself during training and use $x$ to look them up.
+
 \subsection{Energy function}
+We define the energy in our Hopfield net as:
 \begin{equation}
-E = -\half \sum_i \sum_{j\neq i} x_i x_j W_{ij}
+E = -\half \sum_i \sum_{j\neq i} x_i x_j w_{ij}
 \end{equation}
-This is our objective function that we are going to minimize.
+$E$ is also the objective function that we try to minimize during the update procedure.\\
+A state $x$ that is a local minimum of $E$ is also called attractor.
 
 \subsection{Convergence}
 If only one neuron~$j$ is updated at the time, the update will always lead to the same or lower energy.
@@ -41,26 +45,55 @@ If only one neuron~$j$ is updated at the time, the update will always lead to th
 \item $x_j(t+1) = x_j(t) \Rightarrow$ state did not change, energy stays the same
 \item $x_j(t+1) = 1 - x_j(t) \Rightarrow$ state did changed, compute the energy change
 	\begin{align}
-	E_j &= -\half \sum_i x_i x_j W_{ij}\\
+	E_j &= -\half \sum_i x_i x_j w_{ij}\\
 	\Delta E &= E_j(t+1) - E_j(t)\\
-	&= -\half \left[ x_j(t+1) \sum_i x_i W_{ij} - x_j(t) \sum_i x_i W_{ij} \right]\\
-	&= -\half \Delta x_j \sum_i x_i W_{ij}\quad\text{with}\quad	\Delta x_j = x_j(t+1) - x_j(t)\\
+	&= -\half \left[ x_j(t+1) \sum_i x_i w_{ij} - x_j(t) \sum_i x_i w_{ij} \right]\\
+	&= -\half \Delta x_j \sum_i x_i w_{ij} \quad\text{with}\quad	\Delta x_j = x_j(t+1) - x_j(t)\\
 	\intertext{Change from 0 to 1}
-	\Delta x_j &= 1,\,\sum_i x_i W_{ij} > 0 \Rightarrow \Delta E_j \leq 0\\
+	\Delta x_j &= 1,\,\sum_i x_i w_{ij} > 0 \Rightarrow \Delta E_j \leq 0\\
 	\intertext{Change from 1 to 0}
-	\Delta x_j &= -1,\,\sum_i x_i W_{ij} \leq 0 \Rightarrow \Delta E_j \leq 0
+	\Delta x_j &= -1,\,\sum_i x_i w_{ij} \leq 0 \Rightarrow \Delta E_j \leq 0
 	\end{align}
 \end{itemize}
 
+\subsection{Associative Memory}
+An associative memory can store information, \eg a binary vector representing the state of a Hopfield network, and retrieve it from only partial information. The number of patterns that can be learned by a Hopfield net is called the capacity $C$ and depends on the number of neurons $m$ and the used training algorithm.
+
+If we want the link additional information to a state vector (\eg the class of it) we have to store this ourself.
+
 \subsection{Training}
+A simple non-incremental learning rule is:
 \begin{equation}
-W_{ij} = \sum_{x \in X} (2x_i -1)(2x_j-1)
+w_{ij} = \sum_{x \in X} (2x_i-1)(2x_j-1)
+% w_{ij} = \sum_{x \in X} 4*x_i*x_j-2*x_j-2*x_i+1
 \end{equation}
-
+% x_i 	x_j 	(2x_i-1)(2x_j-1)
+% 0 	0 		1
+% 1 	1 		1
+% 0 	1 		-1
+% 1 	0 		-1
+Assuming uncorrelated patterns, a net trained with this method has can store up to $C$ patterns (capacity). C is bound by
 \begin{equation}
-W_{ij} = \frac{1}{|X|} \sum_{x \in X} x_i x_j
+\frac{m}{4 \ln(m)} < C < \frac{m}{2\ln{m}}
 \end{equation}
+, where $m$ is the number of neurons.
 
-\subsection{Associative memory}
+% Different learning rule found in Wikipedia
+% \begin{equation}
+% w_{ij} = \frac{1}{|X|} \sum_{x \in X} x_i x_j
+% \end{equation}
+% x_i 	x_j 	x_i x_j
+% 0 	0 		0
+% 1 	1 		1
+% 0 	1 		0
+% 1 	0 		0
+
+See \cite{Storkey1997} for more on different learning rules and their effect on the capacity.
 
 \subsection{Limitations}
+\begin{itemize}
+\item Found stable state is not guaranteed the most similar pattern to the input pattern
+\item Not all memories are remembered with same emphasis (attractors regions have different sizes)
+\item Spurious states can occur
+\item Efficiency is not good
+\end{itemize}

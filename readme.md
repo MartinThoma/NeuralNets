@@ -15,8 +15,6 @@ ToDo's
 	- [ ] Internet tutorials/ demos
 - Explain overfitting and underfitting (what is it, how to detect, how to prevent)
 - Hyperparamaters \Phi (examples, how to train? => development set)
-- DA
-- RBM
 - Differences between: stacked denoising autoencoders, stacked sparse autoencoders, stacked restricted boltzmann machine
 - What is Curriculum Learning?
 - Dropout
@@ -32,6 +30,8 @@ ToDo's
 - Practical Techniques for Improving Backpropagation (see slides and Pattern Classification Chapter 6.8)
 - NewBob
 - Quickprop (Pattern Recognition 6.9.3)
+- Derivation of the formular for the capaicty in Hopfield nets
+- DBM (deterministic Boltzmann machine)
 
 Open Questions
 --------------
