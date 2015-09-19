@@ -8,15 +8,10 @@
 \item $L$ layers ($1,\dots,L$)
 \item $E$: error function (\eg $E_\text{MSE} = \half \sum\limits_{i=1}^k (t_i - o_i^{(L)})^2$)
 \item $\phi(y)$: activation function (\eg $\phi(y) = \sigma(y) = \frac{1}{1 + e^{-y}}$)
-\item $x_{ij}^{(l)}$: input $i$ of neuron $j$ in layer $l$
-\item $w_{ij}^{(l)}$: weight of connection from neuron~$i$ in layer~$l-1$ to neuron~$j$ in layer~$l$
-\item $z_j^{(l)} = \sum\limits_i w_{ij}^{(l)} * a_i^{(l-1)}$ with $a_i^{(0)} = x$
-\item $a_j^{(l)} = \phi(z_j^{(l)})$
-\item $o = a^{(L)}$ is the output of the neural network
-\item $\eta$: learning rate (usually $\eta < 1$)
-\item $b^{(l)}$: bias unit layer~$l$, either $1$ if there is a weight for it, or without weight if $b^{(l)}$ is adjusted directly during training
 \item $\delta_j^{(l)}$: error of neuron~$j$ in layer~$l$
 \end{itemize}
+
+For convenience we define $a_j^{(0)}\coloneqq x_j$ and $o_j\coloneqq a_j^{(L)}$.
 
 \subsection{Weight Updates in Output Layer}
 Backpropagation is generalization of the delta-rule. We minimize our error function $E$ by `going down' along the gradient. For a single training example~$(x, t)$, with $x$ as input and $t$ and desired output, $E$ is calculated from $o$ and $t$, where $o$ is the result of a forward propagation using $x$ and our weights $w_{ij}^{(l)}$. As the training example is fixed we can only adjust $w_{ij}^{(l)}$ to minimize $E$.\\
@@ -39,14 +34,14 @@ We start with the gradient in our output layer:
 We can now define the error for neuron~$j$ as
 \begin{align}
 \begin{split}
-\delta_j^{(L)} &= \frac{\partial E}{z_j^{(L)}}\\
+\delta_j^{(L)} &\coloneqq \frac{\partial E}{z_j^{(L)}}\\
 &= \frac{\partial E}{a_j^{(L)}} \frac{\partial a_j^{(L)}}{z_j^{(L)}}\\
 &= (o_j - t_j) o_j (1 - o_j))
 \end{split}
 \end{align}
 And our weight update $\Delta w_{ij}^{(L)}$ and new weight $\hat w_{ij}^{(L)}$
 \begin{align}
-\Delta w_{ij}^{(L)} &= - \eta\, \frac{\partial E}{\partial w_{ij}^{(L)}}
+\Delta w_{ij}^{(L)} &\coloneqq - \eta\, \frac{\partial E}{\partial w_{ij}^{(L)}}
 = - \eta \delta_j^{(L)} a_i^{(L-1)}\\
 \hat w_{ij}^{(L)} &= w_{ij}^{(L)} + \Delta w_{ij}^{(L)}
 \end{align}

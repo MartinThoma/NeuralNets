@@ -1,0 +1,35 @@
+\section{Notation}\label{sec:notation}
+Throughout the literature (and history) in the big field of neural networks you will find a whole bunch of different notations and meanings of variable names. Especially when the meaning changes inside a document it can be very confusing for beginners. For this document I will try to stick with one notation. I found it to be very flexible and consistent.
+
+\begin{tabularx}{\textwidth}{ l X }
+Symbol			& Meaning(s) \\ \midrule
+% parameters
+$m$				& Number of features, size of input vector \\
+$k$, $K$		& Number of target classes/clusters, size of output vector \\
+$n$, $N$		& Number of training examples/observations, size of training set \\
+$\eta$			& Learning rate (see \ref{sec:learning-rate}) \\
+
+\midrule % VQ
+$\mu_j$			& Centroid of cluster~$j$ \\
+$d(x, y)$		& Dissimilarity measure, distance or distortion measure, if mention otherwise we use the squared Euclidean distance (see \ref{sec:lvq-distortion-measures}) \\
+
+$E$, $J$		& Error function or objective function (see \ref{sec:error-functions}), by default we use the mean squared error \\
+
+\midrule % MLP
+$w_{ij}^{(l)}$	& Weight of connection from neuron~$i$ in layer~$(l-1)$ to neuron~$j$ in layer~$l$, if the layer is omitted all variables in the equation are from the same layer \\
+$\mathbf{W}$, $\mathbf{w}$ & Weight matrix, weight vector \\
+$b_j^{(l)}$	& bias unit for neuron~$j$ in layer~$l$ \newline For convenience we will use different meanings throughout the lecture notes:
+				\begin{itemize}
+				\item Often the bias is not important for the understanding and left out, but keep in mind that neural network implementation nearly always require bias for good results.
+				\item $b$ has an associated weight (usually $w_{0j}$), than the value of $b$ is always $1$ and we only train the weight
+				\item if there is no weight, we adjust $b_j$ during training
+				\end{itemize} \\
+$\Sigma$		& Summation operator (\eg $\sum_{i=1}^n x_i$), covariance matrix or the input function of a neuron \\
+$\phi(x)$		& Activation function (see \ref{sec:activation-functions}) \\
+$\sigma(x)$		& Sigmoid activation function (see \ref{sec:sigmoid}) \\
+$z_j^{(l)}$		& Total input of the neuron~$j$ in layer~$l$, usually $z_j^{(l)} = b_j^{(l)} + \sum_i w_{ij}^{(l)} a_i^{(l-1)}$ \\
+$a_j^{(l)}$		& Activation/Output of neuron~$j$ in layer~$l$, usually computed from the total input $z_j^{(l)}$, $a_j=\phi(z_j)$ \\
+
+\midrule % Other
+$\delta_{ij}$	&  Kronecker delta, which is defined as $\delta_{ij}=\begin{cases}1 &\text{if } i = j,\\0 &\text{if } i \neq j.\end{cases}$
+\end{tabularx}
