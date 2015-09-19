@@ -1,0 +1,59 @@
+\section{Learning Rate}\label{sec:learning-rate}
+We use the learning rate $\eta$ in our weight updates: $$w_{ij} \leftarrow w_{ij} + \eta\, \delta_j a_i$$
+
+There are several problems with a constant learning rate:
+\begin{itemize}
+\item large learning rate
+	\begin{itemize}
+	\item constantly jump past the minimum ($\Rightarrow$ no convergence)
+	\item neurons may saturate
+	\end{itemize}
+\item small learning rate
+	\begin{itemize}
+	\item slow training
+	\item may get stuck in local minimum
+	\end{itemize}
+\end{itemize}
+
+And of course several ways to deat with it them:
+\begin{itemize}
+\item Predetermined piecewise constant learning rate\newline
+	Use a predetermined sequence of $\eta_i$, increment $i$ after every iteration (epoch/batch)
+\item Exponentially decaying learning rate
+\item Performance Scheduling
+\item Weight Dependent Learning Rate Methods (\eg Momentum, AdaGrad)
+\end{itemize}
+
+\subsection{Exponential Decaying Learning Rate}
+We calculate a new learning rate $\eta(t)$ after each iteration (epoch/batch).
+\begin{equation}\label{eq:exponential-decaying-eta}
+\eta(t)=\alpha\eta(t-1)=\alpha^t\eta(0)
+\end{equation}
+With the parameter $0<\alpha<1$ and we still have to define an initial learning rate $\eta(0)$.
+
+\subsection{Performance Scheduling}
+Measure the cross validation error and decrease the learning rate when the error stops improving.
+
+\subsection{Momentum or Rprop}
+Literature: \cite{Riedmiller1994}
+
+Similar to a rock rolling down a hill we let our gradient get some momentum to speed up training while the direction (sign) of the gradient stays the same. We do so by modifying our weight update rule to,
+\begin{align}\label{eq:momentum}
+w_{ij} &\leftarrow w_{ij} + v_{ij}(t)\\
+v_{ij}(t) &\coloneqq \alpha\, v_{ij}(t-1) - \eta\, \delta_j a_i^{(l-1)}
+\end{align}
+, with $\alpha$ as momentum factor.
+
+\todo{Verify that \emph{Rprop} and \emph{Momentum} are really the same or add differences}
+
+\subsection{AdaGrad}
+Literature: \cite{Duchi2011,Dyer}
+\todo{AdaGrad and AdaDec}
+
+\subsection{Newbob Scheduling}
+Combination of exponential decaying learning rate and performance scheduling. Easy to implement and solid results.
+\begin{itemize}
+\item Start with constant learning rate $\eta(0)$
+\item Once the cross-validation error stops decreasing switch to exponential decaying learning rate
+\item End training after cross-validation error stops decreasing again
+\end{itemize}
