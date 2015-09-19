@@ -10,6 +10,8 @@
 \usepackage{parskip} % do not intend first line of paragraph
 \usepackage[top=1in, bottom=1.25in, left=1.25in, right=1.25in]{geometry} % adjust margins
 
+\usepackage[svgnames]{xcolor} % svgnames loads additional predefined colors (see http://www.w3.org/TR/SVG11/types.html#ColorKeywords), needs to be leaded before TikZ!
+
 \usepackage{tabularx} % filling column width
 \usepackage{booktabs} % use \toprule, \midrule, \bottomrule instead of \hline and \cmidrule instead of \cline
 
@@ -25,17 +27,21 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning,decorations}
 \tikzset{%
-  every neuron/.style={
-    circle,
-    draw,
-    minimum size=1cm
-  },
-  neuron missing/.style={
-    draw=none,
-    scale=4,
-    text height=0.333cm,
-    execute at begin node=\color{black}$\vdots$
-  },
+	neuron/.style={
+		circle,
+		draw,
+		line width=1pt,
+		minimum size=1cm
+	},
+	neuron-missing/.style={
+		draw=none,
+		scale=4,
+		text height=0.333cm,
+		execute at begin node=\color{black}$\vdots$
+	},
+	neuron-input/.style={ draw=Orange },
+	neuron-hidden/.style={ draw=Blue },
+	neuron-output/.style={ draw=Red },
 }
 
 \usepackage[nomain,toc,acronym]{glossaries}
@@ -65,16 +71,17 @@
 
 % include hyperref packeg
 \usepackage[pdftex,
-            pdfauthor={Marvin Ritter},
-            pdftitle={Neuronal Networks - Formulae Collection},
-            pdfsubject={This is my personal collection of formulas in the field of neural networks.},
-            pdfkeywords={Artificial Neuronal Networks Machine Learning},
-            pdfproducer={LaTeX with hyperref},
-            pdfcreator={pdflatex},
-            colorlinks=true]{hyperref}
-% adjust driver used by hyperref for tex4ht
-% \usepackage{hyperref}
-% \ifx\HCode\UnDef\else\hypersetup{tex4ht}\fi
+			pdfauthor={Marvin Ritter},
+			pdftitle={Neuronal Networks - Formulae Collection},
+			pdfsubject={This is my personal collection of formulas in the field of neural networks.},
+			pdfkeywords={Artificial Neuronal Networks Machine Learning},
+			pdfproducer={LaTeX with hyperref},
+			pdfcreator={pdflatex}]{hyperref}
+
+\hypersetup{
+	colorlinks,
+	citecolor=Green,
+}
 
 \begin{document}
 
