@@ -32,8 +32,11 @@ ToDo's
 - Quickprop (Pattern Recognition 6.9.3)
 - Derivation of the formular for the capaicty in Hopfield nets
 - DBM (deterministic Boltzmann machine)
+- L_1 vs L_2 regularization, feature selection
 
 Open Questions
 --------------
 - Backpropagation requires the activation function to be differentiable. How can be use non differentiable activation functions, e. g. step function?
-- Why is LBG better than k-Means?
+- Is LBG better than k-Means?
+- What should I learn from slide V07 page 23
+- @Markus: If we run one of the deep autoencoders forward and backward, how would the signal sound?
