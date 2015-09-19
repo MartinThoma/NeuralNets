@@ -23,9 +23,8 @@ The derivative is always 0.
 	clip = false,
 ]
 \addplot[
-	mark = none,
 	color = blue,
-	thick,
+	thick
 ] coordinates {(-1,0)(0,0)(0,1)(1,1)}
 node[above,pos=1] {$\phi(x)$};
 \end{axis}
@@ -261,6 +260,8 @@ And it's derivative:
 \end{align*}
 
 \subsection{Maxout}
+Literature: \cite{Goodfellow2013}
+
 Outputs the maximum of its inputs
 \begin{align}
 a_j^{(l)} = \max_i z_i^{(l)}, \quad (j-1)g +1 \leq i \leq j g \\

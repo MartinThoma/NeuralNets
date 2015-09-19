@@ -1,4 +1,5 @@
 \section{Backpropagation}\label{sec:backpropagation}
+Literature: \cite[Chapter 4.5]{Mitchell1997}, \cite[Chapter 6.3]{Duda2000}, \cite{Patterson1997} and the original paper \cite{Rumelhart1986}
 
 \subsection{Notation}
 \begin{itemize}
@@ -39,18 +40,18 @@ We can now define the error for neuron~$j$ as
 &= (o_j - t_j) o_j (1 - o_j))
 \end{split}
 \end{align}
-And our weight update $\Delta w_{ij}^{(L)}$ and new weight $\hat w_{ij}^{(L)}$
+, and our weight update
 \begin{align}
 \Delta w_{ij}^{(L)} &\coloneqq - \eta\, \frac{\partial E}{\partial w_{ij}^{(L)}}
-= - \eta \delta_j^{(L)} a_i^{(L-1)}\\
-\hat w_{ij}^{(L)} &= w_{ij}^{(L)} + \Delta w_{ij}^{(L)}
+= - \eta\, \delta_j^{(L)} a_i^{(L-1)}\\
+w_{ij}^{(L)} &\leftarrow w_{ij}^{(L)} + \Delta w_{ij}^{(L)}
 \end{align}
-
+.
 
 \subsection{Weight Outputs for Hidden Layers}
-For hidden layers we need to propagate the error back to the neuron~$j$ in layer~$l$. Intuitively we put in the error in the output layer and use the weights to propagate it backwards.
+For hidden layers we need to propagate the error back to the neuron~$j$ in layer~$l$. Intuitively what are doing, is just inserting the error into the output layer and propagate backwards to the input layer using.
 \begin{align}
-\delta_j^{(l)} &= \frac{\partial E}{\partial z_j^{(l)}} = \frac{\partial E}{\partial a_j^{(l)}} \frac{\partial a_j^{(l)}}{\partial z_j^{(l)}}\\
+\delta_j^{(l)} &\coloneqq \frac{\partial E}{\partial z_j^{(l)}} = \frac{\partial E}{\partial a_j^{(l)}} \frac{\partial a_j^{(l)}}{\partial z_j^{(l)}}\\
 \frac{\partial E}{\partial a_j^{(l)}}
 &= \sum_k \frac{\partial E}{\partial z_k^{(l+1)}} \frac{\partial z_k^{(l+1)}}{\partial a_j^{(l)}}\\
 &= \sum_k \frac{\partial E}{\partial z_k^{(l+1)}} \frac{\partial \sum_i w_{ik}^{(l+1)} * a_i^{(l)}}{\partial a_j^{(l)}}\\
@@ -59,12 +60,12 @@ For hidden layers we need to propagate the error back to the neuron~$j$ in layer
 \frac{\partial a_j^{(l)}}{\partial z_j^{(l)}} &= a_j^{(l)} (1 - a_j^{(l)}) \tag{sigmoid derivative}\\
 \delta_j^{(l)} &= a_j^{(l)} (1 - a_j^{(l)}) \sum_k \delta_k^{(l+1)} w_{jk}^{(l+1)}
 \end{align}
-And finally our weight updates for hidden neurons
+This leads to our weight updates for hidden neurons.
 \begin{align}
 \Delta w_{ij}^{(l)} &= - \eta \frac{\partial E}{\partial w_{ij}^{(l)}}\\
 &= - \eta \frac{\partial E}{\partial z_j^{(l)}} \frac{\partial z_j^{(l)}}{\partial w_{ij}^{(l)}}\\
 &= - \eta\, \delta_j^{(l)} a_i^{(l-1)}\\
-\hat w_{ij}^{(l)} &= w_{ij}^{(l)} + \Delta w_{ij}^{(l)}
+w_{ij}^{(l)} &\leftarrow w_{ij}^{(l)} + \Delta w_{ij}^{(l)}
 \end{align}
 
 
