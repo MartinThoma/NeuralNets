@@ -44,6 +44,11 @@
 	neuron-output/.style={ draw=Red },
 }
 
+\usepackage{todonotes} % ToDo notes and solve conflict with TikZs externalize feature
+\makeatletter
+\renewcommand{\todo}[2][]{\tikzexternaldisable\@todo[inline,#1]{Todgito: #2}\tikzexternalenable}
+\makeatother
+
 \usepackage[nomain,toc,acronym]{glossaries}
 \makeglossaries
 \loadglsentries{Acronyms.tex}
@@ -105,5 +110,7 @@ Corrections, supplements (or wishes for it) and links to good sources/papers are
 \bibliography{Remote}
 
 \printglossary[type=\acronymtype]
+
+\listoftodos
 
 \end{document}
