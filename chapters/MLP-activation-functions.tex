@@ -130,7 +130,7 @@ node[below,pos=1] {$\sigma''(x)$};
 \end{figure}
 
 \subsection{Softmax Function}
-In a classification problem we would like $a_j$ to be a probability ($\Rightarrow \sum_i a_i = 1$). % TODO outputs posteriori probability, biggest value is very likely to get close to 1
+In a classification problem we would like $a_j$ to be a probability ($\Rightarrow \sum_i a_i = 1$). The softmax function will output a posteriori probability and the biggest value from the layer below is very likely to be close to $1$.
 \begin{equation}\label{ed:softmax}
 a_i = \phi(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}
 \end{equation}
@@ -148,7 +148,9 @@ And it's derivative:
 \end{align}
 
 \subsection{Hyperbolic Tangent Function}
-Similar to Sigmoid function, but if the input has a mean of $0$ then so will the output. % TODO Costly computation?
+Similar to Sigmoid function, but with outputs in $[-1,1]$. Also not that if the input has a mean of $0$ then so will the output.
+
+\todo{Why is $\tanh$ worth the computational overhead over sigmoid?}
 \begin{equation}
 \phi(x) = \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
 \end{equation}
@@ -189,9 +191,8 @@ node[right,pos=1] {$1 - \tanh(x)$};
 \end{figure}
 
 \subsection{Linear Function}
-\begin{equation}
-\phi(x) = x
-\end{equation}
+Very simple, but with two big downsides. The gradient is always $1$ and multi-layers using it effectively only do a linear combination and therefore can be left out.
+$$\phi(x) = x$$
 
 \begin{figure}
 \centering
@@ -237,33 +238,29 @@ node[right,pos=1] {$\ln(1+e^x)$};
 
 \subsection{Rectified Linear Unit}
 The Rectified Linear Unit (ReLU) is more biologically plausible.
-\begin{equation}
+\begin{align}
 \phi(x) = \max(0, x)
-\end{equation}
-And it's derivative:
-\begin{align*}
+\intertext{And it's derivative}
 \frac{d\phi(x)}{dx} = 
 	\begin{cases}
 		1 & \text{if}\, x > 0\\
 		0 & \text{if}\, x \leq 0\\
 	\end{cases}
-\end{align*}
+\end{align}
 
 \subsection{Softplus}
 Smoothed version of ReLU.
-\begin{equation}\label{eq:softplus}
+\begin{align}\label{eq:softplus}
 \phi(x) = \ln(1 + e^x)
-\end{equation}
-And it's derivative:
-\begin{align*}
+\intertext{And it's derivative}
 \frac{d\phi(x)}{dx} = \frac{e^x}{1 + e^x} = \frac{1}{e^{-x} + 1}
-\end{align*}
+\end{align}
 
 \subsection{Maxout}
 Literature: \cite{Goodfellow2013}
 
 Outputs the maximum of its inputs
-\begin{align}
+\begin{equation}
 a_j^{(l)} = \max_i z_i^{(l)}, \quad (j-1)g +1 \leq i \leq j g \\
-z_i^{(l)} = \sum_k x_k^{(l-1)} w_{ki}^{(l)} + b^{(l)}
-\end{align}
+\end{equation}
+where $z_i^{(l)} = b^{(l)} + \sum_k w_{ki}^{(l)} x_k^{(l-1)}$ is the summed input and $g$ the size of the group on which we take the maximum.
