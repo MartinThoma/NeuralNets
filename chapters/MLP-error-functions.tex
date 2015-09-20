@@ -71,3 +71,12 @@ node[right,pos=1] {$-\ln(1-o_j)$};
 \end{tikzpicture}
 \caption{Error produced for $t_j=1$ (orange) and for $t_j=0$ (red). $o_j$ must be in range $(0,1]$, otherwise the logarithm can be complex or undefined or the error gets rediciously large.}
 \end{figure}
+
+\subsection{L1 and L2 Regularization}
+Small weights tend to perform better and we can modify the error functions from above to penalize big weight by adding additional error terms.
+\begin{itemize}
+\item L1 norm: $||\mathbf{w}||_{L1} = \sum_j |\mathbf{w}_j|$
+\item L2 norm: $||\mathbf{w}||_{L2} = \sum_j \mathbf{w}_j^2$
+\item new error function $E' = E + \alpha_{L1} ||\mathbf{w}||_{L1} + \alpha_{L2} ||\mathbf{w}||_{L2}$
+\item new hyperparamaters $\alpha_{L1}$ and $\alpha_{L2}$, optimize on development set
+\end{itemize}
