@@ -1,4 +1,6 @@
 \section{Learning Rate}\label{sec:learning-rate}
+Literature: \cite[Chapter 6.8]{Duda2000}
+
 We use the learning rate $\eta$ in our weight updates: $$w_{ij} \leftarrow w_{ij} + \eta\, \delta_j a_i$$
 
 There are several problems with a constant learning rate:
@@ -29,12 +31,12 @@ We calculate a new learning rate $\eta(t)$ after each iteration (epoch/batch).
 \begin{equation}\label{eq:exponential-decaying-eta}
 \eta(t)=\alpha\eta(t-1)=\alpha^t\eta(0)
 \end{equation}
-With the parameter $0<\alpha<1$ and we still have to define an initial learning rate $\eta(0)$.
+With the parameter $\alpha \in (0,1)$ and we still have to define an initial learning rate $\eta(0)$.
 
 \subsection{Performance Scheduling}
 Measure the cross validation error and decrease the learning rate when the error stops improving.
 
-\subsection{Momentum or Rprop}
+\subsection{Momentum or Rprop}\label{sec:momentum}
 Literature: \cite{Riedmiller1994}
 
 Similar to a rock rolling down a hill we let our gradient get some momentum to speed up training while the direction (sign) of the gradient stays the same. We do so by modifying our weight update rule to,
@@ -47,8 +49,24 @@ v_{ij}(t) &\coloneqq \alpha\, v_{ij}(t-1) - \eta\, \delta_j a_i^{(l-1)}
 \todo{Verify that \emph{Rprop} and \emph{Momentum} are really the same or add differences}
 
 \subsection{AdaGrad}
-Literature: \cite{Duchi2011,Dyer}
-\todo{AdaGrad and AdaDec}
+Literature: \cite{Zeiler2012,Duchi2011,Dyer}
+
+\begin{quote}
+AdaGrad alters the weight update to adapt based on historical information, so that frequently occurring features in the gradients get small learning rates and infrequent features get higher ones.
+\end{quote}
+
+\begin{align}
+g_{ij} &= \frac{\partial E}{\partial w_{ij}}\\
+\eta_{ij}(t) &= \frac{\eta_0}{\sqrt{\sum_{\tau=1}^t g_{ij}(\tau)^2}}g_{ij}(t)\\
+w_{ij}(t) &\leftarrow w_{ij}(t-1) - \eta_{ij}(t)\,g_{ij}(t)
+\end{align}
+
+This eliminates the hyperparameter $\eta$, but introduces an initial learning rate $\eta_0$ and has some more downsides \cite{Zeiler2012}. One way to improve it is the limit the window for the sum to size $w$.
+\begin{equation}
+\eta_{ij}(t) = \frac{\eta_0}{\sqrt{\sum_{\tau=1}^w g_{ij}(t-\tau)^2}}g_{ij}(t)\\
+\end{equation}
+
+\emph{AdaDelta} contains further improvements.
 
 \subsection{Newbob Scheduling}
 Combination of exponential decaying learning rate and performance scheduling. Easy to implement and solid results.

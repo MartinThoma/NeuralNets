@@ -5,18 +5,14 @@ This is my personal collection of formulae in the field of neural networks. Wher
 
 Corrections, supplements (or wishes for it) and links to good sources/ papers are very welcome. Just mail me to marvin.ritter@gmail.com or create a ticket/pull request.
 
-ToDo's
+Todo's
 ------
 - Compare BGD, SGD and SGD with minibatches
 - Overview of Pattern recognition (graphic + examples)
-- Add useful literature 
-	- [ ] books
-	- [ ] papers
-	- [ ] Internet tutorials/ demos
+- Add useful literature (books, papers, tutorials, demos)
 - Explain overfitting and underfitting (what is it, how to detect, how to prevent)
 - Hyperparamaters \Phi (examples, how to train? => development set)
 - Differences between: stacked denoising autoencoders, stacked sparse autoencoders, stacked restricted boltzmann machine
-- What is Curriculum Learning?
 - Dropout
 - Maxout
 - Chapter on common datasets/ benchmarks
@@ -26,13 +22,17 @@ ToDo's
 - Conjugate gradient method
 - What is the Schwarz Criterion for k-Means
 - Optimal Brain Damage
-- Hebbian learning rule
 - Practical Techniques for Improving Backpropagation (see slides and Pattern Classification Chapter 6.8)
-- NewBob
 - Quickprop (Pattern Recognition 6.9.3)
 - Derivation of the formular for the capaicty in Hopfield nets
+
+Out of scope (at least for now)
+-------------------------------
 - DBM (deterministic Boltzmann machine)
+- Hebbian learning rule
+- What is Curriculum Learning?
 - L_1 vs L_2 regularization, feature selection
+- AdaBoost
 
 Open Questions
 --------------
