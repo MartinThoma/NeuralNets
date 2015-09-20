@@ -8,6 +8,7 @@ $m$				& Number of features, size of input vector \\
 $k$, $K$		& Number of target classes/clusters, size of output vector \\
 $n$, $N$		& Number of training examples/observations, size of training set \\
 $\eta$			& Learning rate (see \ref{sec:learning-rate}) \\
+$\theta$		& Represents all model parameters \\
 
 \midrule % VQ
 $\mu_j$			& Centroid of cluster~$j$ \\
@@ -30,6 +31,11 @@ $\phi(x)$		& Activation function (see \ref{sec:activation-functions}) \\
 $\sigma(x)$		& Sigmoid activation function (see \ref{sec:sigmoid}) \\
 $z_j^{(l)}$		& Total input of the neuron~$j$ in layer~$l$, usually $z_j^{(l)} = b_j^{(l)} + \sum_i w_{ij}^{(l)} a_i^{(l-1)}$ \\
 $a_j^{(l)}$		& Activation/Output of neuron~$j$ in layer~$l$, usually computed from the total input $z_j^{(l)}$, $a_j=\phi(z_j)$ \\
+
+\midrule % BM
+$v_j \in \{0,1\}$ & Activation of visible neuron/unit~$j$ in Boltzmann machine \\
+$h_j \in \{0,1\}$ & Activation of hidden neuron/unit~$j$ in Boltzmann machine \\
+$b_j (c_j)$		& Bias of visible (hidden) neuron~$j$ in \gls{RBM} \\
 
 \midrule % Other
 $\delta_{ij}$	&  Kronecker delta, which is defined as $\delta_{ij}=\begin{cases}1 &\text{if } i = j,\\0 &\text{if } i \neq j.\end{cases}$

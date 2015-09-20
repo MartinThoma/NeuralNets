@@ -46,32 +46,32 @@ v_{ij}(t) &\coloneqq \alpha\, v_{ij}(t-1) - \eta\, \delta_j a_i^{(l-1)}
 \end{align}
 , with $\alpha$ as momentum factor.
 
+Resilient Propagation (Rprop
+)
 \todo{Verify that \emph{Rprop} and \emph{Momentum} are really the same or add differences}
 
 \subsection{AdaGrad}
 Literature: \cite{Zeiler2012,Duchi2011,Dyer}
 
-\begin{quote}
 AdaGrad alters the weight update to adapt based on historical information, so that frequently occurring features in the gradients get small learning rates and infrequent features get higher ones.
-\end{quote}
 
 \begin{align}
 g_{ij} &= \frac{\partial E}{\partial w_{ij}}\\
-\eta_{ij}(t) &= \frac{\eta_0}{\sqrt{\sum_{\tau=1}^t g_{ij}(\tau)^2}}g_{ij}(t)\\
+\eta_{ij}(t) &= \frac{\eta_0}{\sqrt{\sum_{\tau=1}^t g_{ij}(\tau)^2}}\,g_{ij}(t)\\
 w_{ij}(t) &\leftarrow w_{ij}(t-1) - \eta_{ij}(t)\,g_{ij}(t)
 \end{align}
 
 This eliminates the hyperparameter $\eta$, but introduces an initial learning rate $\eta_0$ and has some more downsides \cite{Zeiler2012}. One way to improve it is the limit the window for the sum to size $w$.
 \begin{equation}
-\eta_{ij}(t) = \frac{\eta_0}{\sqrt{\sum_{\tau=1}^w g_{ij}(t-\tau)^2}}g_{ij}(t)\\
+\eta_{ij}(t) = \frac{\eta_0}{\sqrt{\sum_{\tau=1}^w g_{ij}(t-\tau)^2}}\,g_{ij}(t)\\
 \end{equation}
 
 \emph{AdaDelta} contains further improvements.
 
 \subsection{Newbob Scheduling}
 Combination of exponential decaying learning rate and performance scheduling. Easy to implement and solid results.
-\begin{itemize}
-\item Start with constant learning rate $\eta(0)$
-\item Once the cross-validation error stops decreasing switch to exponential decaying learning rate
-\item End training after cross-validation error stops decreasing again
-\end{itemize}
+\begin{description}
+\item[\textbf{Phase 1}] Start with constant learning rate $\eta(0)$
+\item[\textbf{Phase 2}] Once the cross-validation error stops decreasing switch to exponential decaying learning rate
+\item[\textbf{Terminate}] End training after cross-validation error stops decreasing again
+\end{description}
