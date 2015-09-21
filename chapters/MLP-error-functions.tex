@@ -4,16 +4,16 @@ Sometimes also called objective functions or loss-functions.
 \subsection{Mean-Squared Error}\label{sec:mse}
 As the name suggests the \gls{MSE} is defined as the mean (over all training examples) of squared difference between the correct value $t_i$ und the correct value $o_i$. This big errors are punished harder than small differences.
 \begin{equation}\label{eq:mse}
-E_{\text{MSE}} = \frac{1}{n} \sum_{i=1}^n (t_i - o_i)^2
+E_{\text{MSE}} = \frac{1}{n} \sum_{i=1}^n (\mathbf{t}_i - \mathbf{o}_i)^2
 \end{equation}
 This would derive to
 \begin{align}
 \begin{split}
-\frac{\partial E_{\text{MSE}}}{\partial o_j}
-&= \frac{1}{n} \sum_{i=1}^n \frac{\partial (t_i - o_i)^2}{\partial o_j}\\
-&= \frac{1}{n} \frac{\partial (t_j - o_j)^2}{\partial o_j}\\
-&= \frac{1}{n} 2 (t_j - o_j) (-1)\\
-&= \frac{2}{n} (o_j - t_j)
+\frac{\partial E_{\text{MSE}}}{\partial \mathbf{o}_j}
+&= \frac{1}{n} \sum_{i=1}^n \frac{\partial (\mathbf{t}_i - \mathbf{o}_i)^2}{\partial \mathbf{o}_j}\\
+&= \frac{1}{n} \frac{\partial (\mathbf{t}_j - \mathbf{o}_j)^2}{\partial \mathbf{o}_j}\\
+&= \frac{1}{n} 2 (\mathbf{t}_j - \mathbf{o}_j) (-1)\\
+&= \frac{2}{n} (\mathbf{o}_j - \mathbf{t}_j)
 \end{split}
 \end{align}
 which is technically fine, but as the fraction is only a constant factor, we will often use a a slightly different definition:
@@ -71,6 +71,17 @@ node[right,pos=1] {$-\ln(1-o_j)$};
 \end{tikzpicture}
 \caption{Error produced for $t_j=1$ (orange) and for $t_j=0$ (red). $o_j$ must be in range $(0,1]$, otherwise the logarithm can be complex or undefined or the error gets rediciously large.}
 \end{figure}
+
+\subsection{Classification Figure of Merit}\label{cfm}
+Literature: \cite{Hampshire1990}
+
+The \gls{MSE} and the \gls{CE} functions focus on the difference of the network output $\mathbf{o}$ and target activations $\mathbf{t}$ and try to minimize it. \Gls{CFM} takes a different approach by only using the target activations to identify the correct class $c$ and then tries to maximize the difference between $o_c$ and all other $o_i (i\neq j)$.
+
+\begin{equation}\label{eq:cfm}
+E_{\text{CFM}} = \frac{1}{k-1} \sum_{i=1,i\neq c}^k \frac{\alpha}{1+e^{-\beta (o_c - o_i) + \gamma}}
+\end{equation}
+
+Where $c$ is the correct class, $k$ the number of classes and $\alpha$, $\beta$ and $\gamma$ are just parameters of the sigmoid function (scaling, discontinuity and lateral shift).
 
 \subsection{L1 and L2 Regularization}
 Small weights tend to perform better and we can modify the error functions from above to penalize big weight by adding additional error terms.
