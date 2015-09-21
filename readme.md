@@ -7,24 +7,28 @@ Corrections, supplements (or wishes for it) and links to good sources/ papers ar
 
 Todo's
 ------
-- Compare BGD, SGD and SGD with minibatches
-- Overview of Pattern recognition (graphic + examples)
-- Add useful literature (books, papers, tutorials, demos)
+- Overview off network architectures (feed forward networks: perceptron, MLP, DNN; shared parameters: DA, TDNN, CNN; recurrent networks: Hopfield nets, BM, RBM, RNN)
+	perceptron, ff (MLP-TDNN, CNN), recurrent (Hopfield, BM, RBM)
+- SVM
+- Optimal Brain Damage, Optimal Brain Surgeon
+- Cascade Correlation
+- Meiosis
+- Section on splitting the training data into training set, validation set, development set, test set, ...
+- Hyperparamaters \Theta (list of examples, how to choose/train them?)
 - Explain overfitting and underfitting (what is it, how to detect, how to prevent)
-- Hyperparamaters \Phi (examples, how to train? => development set)
-- Differences between: stacked denoising autoencoders, stacked sparse autoencoders, stacked restricted boltzmann machine
-- Dropout
-- Maxout
+- Quickprop (Pattern Recognition 6.9.3)
+
+- Conjugate gradient method
+- What is the Schwarz Criterion for k-Means
+- Least squares revisited for Perceptrons, see cs229-notes1.pdf for 
+
+- laterale Verbindungen/latente Variable
+- Overview of Pattern recognition (graphic + examples)
+- Compare BGD, SGD and SGD with minibatches
+- Derivation of the formular for the capaicty in Hopfield nets
 - Chapter on common datasets/ benchmarks
 	- MNIST
 	- CIFAR-10: 60000 32x32 colour images in 10 classes, with 6000 images per class. There are 50000 training images and 10000 test images. 
-- Overview off network architectures (feed forward networks: perceptron, MLP, DNN; shared parameters: TDNN, CNN, RNN)
-- Conjugate gradient method
-- What is the Schwarz Criterion for k-Means
-- Optimal Brain Damage
-- Practical Techniques for Improving Backpropagation (see slides and Pattern Classification Chapter 6.8)
-- Quickprop (Pattern Recognition 6.9.3)
-- Derivation of the formular for the capaicty in Hopfield nets
 
 Out of scope (at least for now)
 -------------------------------
@@ -36,7 +40,11 @@ Out of scope (at least for now)
 
 Open Questions
 --------------
-- Backpropagation requires the activation function to be differentiable. How can be use non differentiable activation functions, e. g. step function?
-- Is LBG better than k-Means?
+- Backpropagation requires the activation function to be differentiable. How can be use non differentiable activation functions, e. g. step function, ReLu
+- Is LBG better than k-Means? In LBG in could check the loss function value for 1,2,4,...,k manually, k-Means should be faster.
 - What should I learn from slide V07 page 23
-- @Markus: If we run one of the deep autoencoders forward and backward, how would the signal sound?
+- If we run a 5-layer DA forward and backward on a speech signal, how would it sound. (Leave out or invert preprocessing as well)
+- Is Rprop better than Momentum as it does directly turn around if the gradient changes sign while Momentum only slows down? (Jumps over minima vs miss minima)
+- What is the difference in pretraining with stacking autoencoders to stacking RBMs? (I know that autoencoders can be used for denoising, so stacked DAs should be better for noisy signals, but what about plain autoencoders vs RBM)
+- Does a trained Hopfield net always have spurious state
+- Bild mit zick zac

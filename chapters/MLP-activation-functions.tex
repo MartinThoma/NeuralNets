@@ -130,7 +130,7 @@ node[below,pos=1] {$\sigma''(x)$};
 \end{figure}
 
 \subsection{Softmax Function}
-In a classification problem we would like $a_j$ to be a probability ($\Rightarrow \sum_i a_i = 1$). The softmax function will output a posteriori probability and the biggest value from the layer below is very likely to be close to $1$.
+In a classification problem we would like $\mathbf{a}$ to be a probability distribution ($\Rightarrow \sum_i a_i = 1$). The softmax function will output a posteriori probability ($p(k|x$) and the biggest value from the layer below is very likely to be close to $1$.
 \begin{equation}\label{ed:softmax}
 a_i = \phi(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}
 \end{equation}
