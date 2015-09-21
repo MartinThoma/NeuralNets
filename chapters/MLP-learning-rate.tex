@@ -36,9 +36,7 @@ With the parameter $\alpha \in (0,1)$ and we still have to define an initial lea
 \subsection{Performance Scheduling}
 Measure the cross validation error and decrease the learning rate when the error stops improving.
 
-\subsection{Momentum or Rprop}\label{sec:momentum}
-Literature: \cite{Riedmiller1994}
-
+\subsection{Momentum}\label{sec:momentum}
 Similar to a rock rolling down a hill we let our gradient get some momentum to speed up training while the direction (sign) of the gradient stays the same. We do so by modifying our weight update rule to,
 \begin{align}\label{eq:momentum}
 w_{ij} &\leftarrow w_{ij} + v_{ij}(t)\\
@@ -46,9 +44,23 @@ v_{ij}(t) &\coloneqq \alpha\, v_{ij}(t-1) - \eta\, \delta_j a_i^{(l-1)}
 \end{align}
 , with $\alpha$ as momentum factor.
 
-Resilient Propagation (Rprop
-)
-\todo{Verify that \emph{Rprop} and \emph{Momentum} are really the same or add differences}
+\subsection{Resilient Propagation (Rprop)}\label{sec:rprop}
+Literature: \cite{Riedmiller1994}
+
+Same idea as \emph{Momentum} but just a bit more complicated. Only the sign of the gradient $\frac{\partial E(t)}{\partial w_{ij}}$ is used to adjust the values $v_{it}(t)$. It also introduces several new hyperparameters ($v_0$, $v_{\text{min}}$, $v_{\text{max}}$, $\alpha^+$, $\alpha^-$) instead of just one.
+\begin{align}
+w_{ij} &\leftarrow \begin{cases}
+	w_{ij} - v_{ij}(t) & \text{if } \frac{\partial E(t)}{\partial w_{ij}} > 0\\
+	w_{ij} + v_{ij}(t) & \text{if } \frac{\partial E(t)}{\partial w_{ij}} < 0
+	\end{cases}\\
+v_{ij}(0) &= v_0\\
+v_{ij}(t) &= \begin{cases}
+	\alpha^+ v_{ij}(t-1) & \text{if } \frac{\partial E(t-1)}{\partial w_{ij}} \frac{\partial E(t)}{\partial w_{ij}} > 0\\
+	\alpha^- v_{ij}(t-1) & \text{if } \frac{\partial E(t-1)}{\partial w_{ij}} \frac{\partial E(t)}{\partial w_{ij}} > 0\\
+	v_{ij}(t-1) & \text{else}
+	\end{cases}
+\end{align}
+In practice the starting weight update $v_0$ should be a small and $v_{ij}(t)$ should be limited to $[v_{\text{min}}, v_{\text{max}}]$. Good values for $\alpha^-$ and $\alpha^+$ are $0.5$ and $1.2$.
 
 \subsection{AdaGrad}
 Literature: \cite{Zeiler2012,Duchi2011,Dyer}
