@@ -7,44 +7,45 @@ Corrections, supplements (or wishes for it) and links to good sources/ papers ar
 
 Todo's
 ------
-- Overview off network architectures (feed forward networks: perceptron, MLP, DNN; shared parameters: DA, TDNN, CNN; recurrent networks: Hopfield nets, BM, RBM, RNN)
-	perceptron, ff (MLP-TDNN, CNN), recurrent (Hopfield, BM, RBM)
-- SVM
-- Optimal Brain Damage, Optimal Brain Surgeon
-- Cascade Correlation
-- Meiosis
+- Overview off network architectures (linear models: perceptron, LVQ; feed forward networks: MLP, DNN; recurrent networks: Hopfield nets, BM, RBM, RNN; shared parameters: DA, TDNN, CNN)
+- Overview of Pattern recognition (graphic + examples)
+- SVM (Support Vector Machines)
+- LSTM (Long Short-Term Memory)
+- Generalization
+	- Overfitting
+	- Underfitting
+	- Curves with train vs test error
+	- How to improve generalization: Weight Elimanation, Weight decay, Optimal Brain Damage, Optimal Brain Surgeon
+	- How to grow networks: Cascade Correlation, Meiosis Nets, Automativ Structure Optimization
 - Section on splitting the training data into training set, validation set, development set, test set, ...
 - Hyperparamaters \Theta (list of examples, how to choose/train them?)
-- Explain overfitting and underfitting (what is it, how to detect, how to prevent)
 - Quickprop (Pattern Recognition 6.9.3)
-
 - Conjugate gradient method
 - What is the Schwarz Criterion for k-Means
-- Least squares revisited for Perceptrons, see cs229-notes1.pdf for 
-
-- laterale Verbindungen/latente Variable
-- Overview of Pattern recognition (graphic + examples)
-- Compare BGD, SGD and SGD with minibatches
-- Derivation of the formular for the capaicty in Hopfield nets
-- Chapter on common datasets/ benchmarks
+- Good splitting methods for LBG
+- Perceptron Learning
+	- Linear Regression
+	- Logistic Regression
+	- Least squares revisited for Perceptrons, see cs229-notes1.pdf for 
+	- Inverted Data Trick
+- Compare BGD vs SGD vs SGD with minibatches
+- Derivation of the formular for the capacity in Hopfield nets
+- Common datasets/benchmarks
 	- MNIST
 	- CIFAR-10: 60000 32x32 colour images in 10 classes, with 6000 images per class. There are 50000 training images and 10000 test images. 
+- Hebbian learning rule
+- Section on which learning rules can be used with BP (linear dosen't make sense, step is not possible, what about ReLu?)
+- Highlight difference between Momentum and Rprop (Momentum might roll over small minima, Rprop is more like to converge into them)
+- Sequence Training
+- Vanishing Gradient
 
 Out of scope (at least for now)
 -------------------------------
-- DBM (deterministic Boltzmann machine)
-- Hebbian learning rule
 - What is Curriculum Learning?
-- L_1 vs L_2 regularization, feature selection
+- L_1 vs L_2 regularization for feature selection
 - AdaBoost
+- DBM (deterministic Boltzmann machine)
 
 Open Questions
 --------------
-- Backpropagation requires the activation function to be differentiable. How can be use non differentiable activation functions, e. g. step function, ReLu
-- Is LBG better than k-Means? In LBG in could check the loss function value for 1,2,4,...,k manually, k-Means should be faster.
-- What should I learn from slide V07 page 23
-- If we run a 5-layer DA forward and backward on a speech signal, how would it sound. (Leave out or invert preprocessing as well)
-- Is Rprop better than Momentum as it does directly turn around if the gradient changes sign while Momentum only slows down? (Jumps over minima vs miss minima)
-- What is the difference in pretraining with stacking autoencoders to stacking RBMs? (I know that autoencoders can be used for denoising, so stacked DAs should be better for noisy signals, but what about plain autoencoders vs RBM)
-- Does a trained Hopfield net always have spurious state
-- Bild mit zick zac
+- Does a trained Hopfield net always have spurious states? what to do (in practice) if you get to one during evaluation?

@@ -11,6 +11,7 @@ A slightly different definition is to minimize our already defined $W(C)$
 \begin{equation}
 W(C) = \frac{1}{2} \sum\limits_{k=1}^K \sum\limits_{C(i)=k} \sum\limits_{C(j)=k} ||x_i - x_j||^2 = \sum\limits_{k=1}^K N_k \sum\limits_{C(i)=k} ||x_i - \mu_k||^2
 \end{equation}
+\todo{Add derivate for this equation and why $N_k$ is left out later}
 
 Also called \emph{Lloyd's Algorithm} we optimize for $J$ in a greedy fashion.
 \begin{enumerate}
@@ -28,7 +29,8 @@ Also called \emph{Lloyd's Algorithm} we optimize for $J$ in a greedy fashion.
 During the course of the k-means algorithm, the error function monotonically decreases into a local minimum. The proof is simply done by proofing that both steps will independently decrease $E$ if possible.
 
 \section{Fuzzy k-Means}\label{sec:fuzzy-kmeans}
-Literature: \cite{Introduction2000}
+Literature: \cite{Introduction2000}\\
+In English literature it is sometimes also called \emph{Fuzzy c-Means} (FCM).
 
 Observation does not belong strictly to one cluster, but has each $x_i$ a member ship degree $u_{ik}$ for each cluster~$k$.
 \begin{align}
