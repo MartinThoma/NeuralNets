@@ -5,12 +5,18 @@ This is my personal collection of formulae in the field of neural networks. Wher
 
 Corrections, supplements (or wishes for it) and links to good sources/ papers are very welcome. Just mail me to marvin.ritter@gmail.com or create a ticket/pull request.
 
-Todo's
-------
+Missing
+-------
 - Overview off network architectures (linear models: perceptron, LVQ; feed forward networks: MLP, DNN; recurrent networks: Hopfield nets, BM, RBM, RNN; shared parameters: DA, TDNN, CNN)
 - Overview of Pattern recognition (graphic + examples)
 - SVM (Support Vector Machines)
 - LSTM (Long Short-Term Memory)
+- Shared Weights
+	- TDNN (Time delay neural networks), with example for speech recognition
+	- CNN (convolutional neural networks), with example for image recognition
+- RNN (Recurrent Neural Networks)
+	- Backpropagation through time
+	- Vanishing Gradient
 - Generalization
 	- Overfitting
 	- Underfitting
@@ -19,8 +25,9 @@ Todo's
 	- How to grow networks: Cascade Correlation, Meiosis Nets, Automativ Structure Optimization
 - Section on splitting the training data into training set, validation set, development set, test set, ...
 - Hyperparamaters \Theta (list of examples, how to choose/train them?)
-- Quickprop (Pattern Recognition 6.9.3)
-- Conjugate gradient method
+- Alternatives to Backpropagation
+	- Second-order methods (Quickprop)
+	- Conjugate gradient method
 - What is the Schwarz Criterion for k-Means
 - Good splitting methods for LBG
 - Perceptron Learning
@@ -37,7 +44,10 @@ Todo's
 - Section on which learning rules can be used with BP (linear dosen't make sense, step is not possible, what about ReLu?)
 - Highlight difference between Momentum and Rprop (Momentum might roll over small minima, Rprop is more like to converge into them)
 - Sequence Training
-- Vanishing Gradient
+- Empty sections
+	- stacking autoencoders
+	- stacking RBMs
+	- SOM (Self-organizing maps)
 
 Out of scope (at least for now)
 -------------------------------

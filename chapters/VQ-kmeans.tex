@@ -18,12 +18,12 @@ Also called \emph{Lloyd's Algorithm} we optimize for $J$ in a greedy fashion.
 \item \textbf{Initialize}: There are many ways to initialize the centroids:
 	\begin{itemize}
 	\item distribute uniformly
-	\item randomly (distribution?)
+	\item randomly (different distribution are possible)
 	\item start with one random centroid and iteratively place to next one by maximizing the distance to all others
 	\end{itemize}
 \item \textbf{Classify}: Assign each observation $i$ to the nearest centroid: $$C(i) = \argmin\limits_{1\leq k \leq K} ||x_i - \mu_k||^2$$
 \item \textbf{Recenter}: For each class $k$, compute a new centroid as the mean of the updated class assignments: $$\mu_k = \frac{\sum\limits_{C(i)=k} x_i}{N_k}$$
-\item \textbf{Repeat step 2 and 3 until stopping criteria fulfilled} (\eg centers stop moving/ C(i) unchanged).
+\item \textbf{Repeat step 2 and 3 until stopping criteria fulfilled} (\eg centers stop moving, or equally until C(i) stays unchanged).
 \end{enumerate}
 
 During the course of the k-means algorithm, the error function monotonically decreases into a local minimum. The proof is simply done by proofing that both steps will independently decrease $E$ if possible.
@@ -61,14 +61,18 @@ The algorithm takes a parameter a small $\epsilon > 0$ (\eg $\epsilon=0.001$).
 \begin{enumerate}
 \item \textbf{Initialize} 1-vector starting codebook:
 	\begin{align}
+	\begin{split}
 	\mu_1(0) &= \frac{1}{N} \sum\limits_{i=1}^N x_i\\
 	t &= 0
+	\end{split}
 	\end{align}
 \item \textbf{Double codebook}:
 	\begin{align}
+	\begin{split}
 	\mu_j(t+1) &= (1+\epsilon)\, \mu_j(t) \quad \text{for } j=1,\cdots,2^t\\
 	\mu_{2*j+1}(t+1) &= (1-\epsilon)\, \mu_j(t) \quad \text{for } j=1,\cdots,2^t\\
 	t &= t+1
+	\end{split}
 	\end{align}
 \item \textbf{Run k-Means} Use k-Means to optimize to improve the $\mu_j(t)$.
 \item \textbf{Repeat step 2 and 3} until desired number of codebook vectors is reached (for $t=1,\cdots,\log_2(K)-1$)
