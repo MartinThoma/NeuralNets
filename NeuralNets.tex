@@ -7,15 +7,49 @@
 \usepackage{mathtools}
 \usepackage{amsfonts}
 \usepackage{graphicx}
- \usepackage{parskip} % do not intend first line of paragraph
+\usepackage{parskip} % do not intend first line of paragraph
+\usepackage[top=1in, bottom=1.25in, left=1.25in, right=1.25in]{geometry} % adjust margins
 
-\usepackage{pgfplots}
+\usepackage[svgnames]{xcolor} % svgnames loads additional predefined colors (see http://www.w3.org/TR/SVG11/types.html#ColorKeywords), needs to be leaded before TikZ!
+
+\usepackage{tabularx} % filling column width
+\usepackage{booktabs} % use \toprule, \midrule, \bottomrule instead of \hline and \cmidrule instead of \cline
+
+\usepackage{algorithm2e}
+
+\usepackage{pgfplots} % easy function plots
 \pgfplotsset{compat=1.12}
 
-% cache figures outside of the latex document for faster compiles
+% cache TikZ figures outside of the latex document for faster compiles
 \usetikzlibrary{external}
 \tikzsetexternalprefix{figures/}
 \tikzexternalize[shell escape=-enable-write18]
+
+% draw neural nets (see bottleneck-features for an example)
+\usepackage{tikz}
+\usetikzlibrary{positioning,decorations}
+\tikzset{%
+	neuron/.style={
+		circle,
+		draw,
+		line width=1pt,
+		minimum size=1cm
+	},
+	neuron-missing/.style={
+		draw=none,
+		scale=4,
+		text height=0.333cm,
+		execute at begin node=\color{black}$\vdots$
+	},
+	neuron-input/.style={ draw=Orange },
+	neuron-hidden/.style={ draw=Blue },
+	neuron-output/.style={ draw=Red },
+}
+
+\usepackage{todonotes} % ToDo notes and solve conflict with TikZs externalize feature
+\makeatletter
+\renewcommand{\todo}[2][]{\tikzexternaldisable\@todo[inline,#1]{Todo: #2}\tikzexternalenable}
+\makeatother
 
 \usepackage[nomain,toc,acronym]{glossaries}
 \makeglossaries
@@ -24,8 +58,7 @@
 % only files listed here will be included
 % \includeonly{
 % 	chapters/LVQ,
-% 	chapters/MLP,
-% 	chapters/Preprocessing,
+%   chapters/MLP,
 % }
 
 % Additional math operators
@@ -46,34 +79,46 @@
 
 % include hyperref packeg
 % \usepackage[pdftex,
-            % pdfauthor={Marvin Ritter},
-            % pdftitle={Neuronal Networks - Formulae Collection},
-            % pdfsubject={This is my personal collection of formulas in the field of neural networks.},
-            % pdfkeywords={Artificial Neuronal Networks Machine Learning},
-            % pdfproducer={LaTeX with hyperref},
-            % pdfcreator={pdflatex}]{hyperref}
+% 			pdfauthor={Marvin Ritter},
+% 			pdftitle={Neuronal Networks - Formulae Collection},
+% 			pdfsubject={This is my personal collection of formulas in the field of neural networks.},
+% 			pdfkeywords={Artificial Neuronal Networks Machine Learning},
+% 			pdfproducer={LaTeX with hyperref},
+% 			pdfcreator={pdflatex}]{hyperref}
 % adjust driver used by hyperref for tex4ht
 \usepackage{hyperref}
 % \ifx\HCode\UnDef\else\hypersetup{tex4ht}\fi
+
+\hypersetup{
+	colorlinks,
+	citecolor=Green,
+}
 
 \begin{document}
 
 \maketitle
 
-\chapter*{Introduction}
-This is my personal collection of formulae in the field of neural networks. I started it in preparation to my exam on the neural nets at \gls{KIT}. Even so the content will be similar to the course it is neither limited to it nor linked with the course in any means. \emph{This is not official script and may contain errors and lag completeness.}
+\chapter*{About this document}
+This is my personal collection of formulae in the field of neural networks. Where I felt the need for it I also added explanations and derivations. I started it in preparation to my exam on the neural nets at \gls{KIT}. Even so the content is similar to the course topics it is neither limited to it nor guaranteed to cover it completely. \emph{These are not official lecture notes and may contain errors and lag completeness.}
 
-Corrections, supplements (or wishes) and links to good sources/ papers are very welcome. Just mail me to \href{mailtto:marvin.ritter@gmail.com}{marvin.ritter@gmail.com}.
+Corrections, supplements (or wishes for it) and links to good sources/papers are very welcome. Just mail me to \href{mailtto:marvin.ritter@gmail.com}{marvin.ritter@gmail.com} or create a ticket/pull request.
 
 \tableofcontents 
 
+\include{chapters/Intro}
 \include{chapters/VQ}
-\include{chapters/MLP}
-\include{chapters/Preprocessing}
+% \include{chapters/Perceptron}
+% \include{chapters/MLP}
+% \include{chapters/BM}
+% \include{chapters/DA}
+% \include{chapters/AdvNN}
+% \include{chapters/PracticalTricks}
 
 % \bibliographystyle{apalike}
 % \bibliography{Remote}
 
 % \printglossary[type=\acronymtype]
+
+\listoftodos
 
 \end{document}

@@ -1,4 +1,4 @@
-\section{Activation Functions}
+\section{Activation Functions}\label{sec:activation-functions}
 
 \subsection{Step Function}
 \begin{equation}\label{eq:step_function}
@@ -23,9 +23,8 @@ The derivative is always 0.
 	clip = false,
 ]
 \addplot[
-	mark = none,
 	color = blue,
-	thick,
+	thick
 ] coordinates {(-1,0)(0,0)(0,1)(1,1)}
 node[above,pos=1] {$\phi(x)$};
 \end{axis}
@@ -41,7 +40,7 @@ Most common activation function, can saturate and is easy to dervice.
 And it's derivative:
 \begin{align}\label{ed:sigmoid_derivative}
 \begin{split}
-\frac{d\sigma(x)}{dx} &= \frac{d}{dx} (1 + e^{-\beta x})^{-1}\\
+\frac{d\,\sigma(x)}{d\,x} &= \frac{d}{d\,x} (1 + e^{-\beta x})^{-1}\\
 &= (-1) (1 + e^{-\beta x})^{-2} (-\beta e^{-\beta x})\\
 &= \beta (1 + e^{-\beta x})^{-2} e^{-\beta x}\\
 &= \beta \frac{1}{1 + e^{-\beta x}} \frac{e^{-\beta x}}{1 + e^{-\beta x}}\\
@@ -50,6 +49,15 @@ And it's derivative:
 &= \beta \sigma(x) (1 - \sigma(x))
 \end{split}
 \end{align}
+And because there exists algorithm using this, you should have seen the second derivative as well ($\beta=1$):
+\begin{align}
+\begin{split}
+\frac{d\,\sigma(x)(1-\sigma(x))}{d\,x} &= (1-\sigma(x)) \frac{d\,\sigma(x)}{d\,x} + \sigma(x) \frac{d\,(1-\sigma(x))}{d\,x}\\
+&= (1-\sigma(x)) \sigma(x) (1 - \sigma(x)) + \sigma(x) (-1) \sigma(x) (1 - \sigma(x))\\
+&= \sigma(x) (1 - \sigma(x))^2 - \sigma(x)^2 (1 - \sigma(x))
+\end{split}
+\end{align}
+
 \begin{figure}
 \centering
 \begin{tikzpicture}
@@ -72,13 +80,6 @@ And it's derivative:
 node[right,pos=1] {$\sigma(x)$};
 \addplot[
 	samples = 100, 
-	color = blue,
-	thick, smooth,
-	]
-{(1/(1+e^(-x)))*(1-(1/(1+e^(-x))))}
-node[right,pos=1] {$\sigma(x)(1-\sigma(x))$};
-\addplot[
-	samples = 100, 
 	color = orange,
 	thick, smooth,
 	]
@@ -86,18 +87,50 @@ node[right,pos=1] {$\sigma(x)(1-\sigma(x))$};
 node[above,pos=0.8] {$\sigma(x)$ with $\beta=3$};
 \addplot[
 	samples = 100, 
-	color = yellow,
+	color = blue,
 	thick, smooth,
 	]
 {1/(1+e^(-0.5*x))}
 node[below right,pos=0.9] {$\sigma(x)$ with $\beta=0.5$};
 \end{axis}
 \end{tikzpicture}
-\caption{Sigmoid Function (red) and its derivative (blue).}
+\caption{Sigmoid function with $\beta=1$ (red), $\beta=3$ (orange) and $\beta=0.5$ (blue).}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	axis lines = middle,
+	xlabel = $x$,
+	ylabel = $y$,
+	ymin = -0.4,
+	ymax = 0.4,
+	xmin = -5,
+	xmax = 5,
+	clip = false,
+]
+\addplot[
+	samples = 100, 
+	color = red,
+	thick, smooth,
+	]
+{(1/(1+e^(-x)))*(1-(1/(1+e^(-x))))}
+node[above,pos=1] {$\sigma'(x)$};
+\addplot[
+	samples = 100, 
+	color = blue,
+	thick, smooth,
+	]
+{(1/(1+e^(-x)))*(1-(1/(1+e^(-x))))^2 - (1/(1+e^(-x)))^2*(1-(1/(1+e^(-x))))}
+node[below,pos=1] {$\sigma''(x)$};
+\end{axis}
+\end{tikzpicture}
+\caption{First and second derivative of the sigmoid function.}
 \end{figure}
 
 \subsection{Softmax Function}
-In a classification problem we would like $a_j$ to be a probability ($\Rightarrow \sum_i a_i = 1$). % TODO outputs posteriori probability, biggest value is very likely to get close to 1
+In a classification problem we would like $\mathbf{a}$ to be a probability distribution ($\Rightarrow \sum_i a_i = 1$). The softmax function will output a posteriori probability ($p(k|x$) and the biggest value from the layer below is very likely to be close to $1$.
 \begin{equation}\label{ed:softmax}
 a_i = \phi(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}
 \end{equation}
@@ -115,7 +148,9 @@ And it's derivative:
 \end{align}
 
 \subsection{Hyperbolic Tangent Function}
-Similar to Sigmoid function, but if the input has a mean of $0$ then so will the output. % TODO Costly computation?
+Similar to Sigmoid function, but with outputs in $[-1,1]$. Also not that if the input has a mean of $0$ then so will the output.
+
+\todo{Why is $\tanh$ worth the computational overhead over sigmoid?}
 \begin{equation}
 \phi(x) = \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
 \end{equation}
@@ -156,9 +191,8 @@ node[right,pos=1] {$1 - \tanh(x)$};
 \end{figure}
 
 \subsection{Linear Function}
-\begin{equation}
-\phi(x) = x
-\end{equation}
+Very simple, but with two big downsides. The gradient is always $1$ and multi-layers using it effectively only do a linear combination and therefore can be left out.
+$$\phi(x) = x$$
 
 \begin{figure}
 \centering
@@ -204,31 +238,29 @@ node[right,pos=1] {$\ln(1+e^x)$};
 
 \subsection{Rectified Linear Unit}
 The Rectified Linear Unit (ReLU) is more biologically plausible.
-\begin{equation}
+\begin{align}
 \phi(x) = \max(0, x)
-\end{equation}
-And it's derivative:
-\begin{align*}
+\intertext{And it's derivative}
 \frac{d\phi(x)}{dx} = 
 	\begin{cases}
 		1 & \text{if}\, x > 0\\
 		0 & \text{if}\, x \leq 0\\
 	\end{cases}
-\end{align*}
+\end{align}
 
 \subsection{Softplus}
 Smoothed version of ReLU.
-\begin{equation}\label{eq:softplus}
+\begin{align}\label{eq:softplus}
 \phi(x) = \ln(1 + e^x)
-\end{equation}
-And it's derivative:
-\begin{align*}
+\intertext{And it's derivative}
 \frac{d\phi(x)}{dx} = \frac{e^x}{1 + e^x} = \frac{1}{e^{-x} + 1}
-\end{align*}
+\end{align}
 
 \subsection{Maxout}
+Literature: \cite{Goodfellow2013}
+
 Outputs the maximum of its inputs
-\begin{align}
+\begin{equation}
 a_j^{(l)} = \max_i z_i^{(l)}, \quad (j-1)g +1 \leq i \leq j g \\
-z_i^{(l)} = \sum_k x_k^{(l-1)} w_{ki}^{(l)} + b^{(l)}
-\end{align}
+\end{equation}
+where $z_i^{(l)} = b^{(l)} + \sum_k w_{ki}^{(l)} x_k^{(l-1)}$ is the summed input and $g$ the size of the group on which we take the maximum.

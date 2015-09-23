@@ -1,0 +1,91 @@
+\section{Learning Rate}\label{sec:learning-rate}
+Literature: \cite[Chapter 6.8]{Duda2000}
+
+We use the learning rate $\eta$ in our weight updates: $$w_{ij} \leftarrow w_{ij} + \eta\, \delta_j a_i$$
+
+There are several problems with a constant learning rate:
+\begin{itemize}
+\item large learning rate
+	\begin{itemize}
+	\item constantly jump past the minimum ($\Rightarrow$ no convergence)
+	\item neurons may saturate
+	\end{itemize}
+\item small learning rate
+	\begin{itemize}
+	\item slow training
+	\item may get stuck in local minimum
+	\end{itemize}
+\end{itemize}
+
+And of course several ways to deat with it them:
+\begin{itemize}
+\item Predetermined piecewise constant learning rate\newline
+	Use a predetermined sequence of $\eta_i$, increment $i$ after every iteration (epoch/batch)
+\item Exponentially decaying learning rate
+\item Performance Scheduling
+\item Weight Dependent Learning Rate Methods (\eg Momentum, AdaGrad)
+\end{itemize}
+
+\subsection{Exponential Decaying Learning Rate}
+We calculate a new learning rate $\eta(t)$ after each iteration (epoch/batch).
+\begin{equation}\label{eq:exponential-decaying-eta}
+\eta(t)=\alpha\eta(t-1)=\alpha^t\eta(0)
+\end{equation}
+With the parameter $\alpha \in (0,1)$ and we still have to define an initial learning rate $\eta(0)$.
+
+\subsection{Performance Scheduling}
+Measure the cross validation error and decrease the learning rate when the error stops improving.
+
+\subsection{Momentum}\label{sec:momentum}
+Similar to a rock rolling down a hill we let our gradient get some momentum to speed up training while the direction (sign) of the gradient stays the same. We do so by modifying our weight update rule to,
+\begin{align}\label{eq:momentum}
+w_{ij} &\leftarrow w_{ij} + v_{ij}(t)\\
+v_{ij}(t) &\coloneqq \alpha\, v_{ij}(t-1) - \eta\, \delta_j a_i^{(l-1)}
+\end{align}
+, with $\alpha$ as momentum factor.
+
+A lot of research has gone into the question on how to pick/adjust both $\eta$ and $\alpha$, a good start for the discussion is \cite{Yu1997}.
+
+\subsection{Resilient Propagation (Rprop)}\label{sec:rprop}
+Literature: \cite{Riedmiller1994}
+
+Same idea as \emph{Momentum} but just a bit more complicated. Only the sign of the gradient $\frac{\partial E(t)}{\partial w_{ij}}$ is used to adjust the values $v_{it}(t)$. It also introduces several new hyperparameters ($v_0$, $v_{\text{min}}$, $v_{\text{max}}$, $\alpha^+$, $\alpha^-$) instead of just one.
+\begin{align}
+w_{ij} &\leftarrow \begin{cases}
+	w_{ij} - v_{ij}(t) & \text{if } \frac{\partial E(t)}{\partial w_{ij}} > 0\\
+	w_{ij} + v_{ij}(t) & \text{if } \frac{\partial E(t)}{\partial w_{ij}} < 0
+	\end{cases}\\
+v_{ij}(0) &= v_0\\
+v_{ij}(t) &= \begin{cases}
+	\alpha^+ v_{ij}(t-1) & \text{if } \frac{\partial E(t-1)}{\partial w_{ij}} \frac{\partial E(t)}{\partial w_{ij}} > 0\\
+	\alpha^- v_{ij}(t-1) & \text{if } \frac{\partial E(t-1)}{\partial w_{ij}} \frac{\partial E(t)}{\partial w_{ij}} > 0\\
+	v_{ij}(t-1) & \text{else}
+	\end{cases}
+\end{align}
+In practice the starting weight update $v_0$ should be a small and $v_{ij}(t)$ should be limited to $[v_{\text{min}}, v_{\text{max}}]$. Good values for $\alpha^-$ and $\alpha^+$ are $0.5$ and $1.2$.
+
+\subsection{AdaGrad}
+Literature: \cite{Zeiler2012,Duchi2011,Dyer}
+
+AdaGrad alters the weight update to adapt based on historical information, so that frequently occurring features in the gradients get small learning rates and infrequent features get higher ones.
+
+\begin{align}
+g_{ij} &= \frac{\partial E}{\partial w_{ij}}\\
+\eta_{ij}(t) &= \frac{\eta_0}{\sqrt{\sum_{\tau=1}^t g_{ij}(\tau)^2}}\,g_{ij}(t)\\
+w_{ij}(t) &\leftarrow w_{ij}(t-1) - \eta_{ij}(t)\,g_{ij}(t)
+\end{align}
+
+This eliminates the hyperparameter $\eta$, but introduces an initial learning rate $\eta_0$ and has some more downsides \cite{Zeiler2012}. One way to improve it is the limit the window for the sum to size $w$.
+\begin{equation}
+\eta_{ij}(t) = \frac{\eta_0}{\sqrt{\sum_{\tau=1}^w g_{ij}(t-\tau)^2}}\,g_{ij}(t)\\
+\end{equation}
+
+\emph{AdaDelta} contains further improvements.
+
+\subsection{Newbob Scheduling}
+Combination of exponential decaying learning rate and performance scheduling. Easy to implement and solid results.
+\begin{description}
+\item[\textbf{Phase 1}] Start with constant learning rate $\eta(0)$
+\item[\textbf{Phase 2}] Once the cross-validation error stops decreasing switch to exponential decaying learning rate
+\item[\textbf{Terminate}] End training after cross-validation error stops decreasing again
+\end{description}
